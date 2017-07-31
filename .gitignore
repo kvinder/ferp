@@ -1,0 +1,5 @@
+# ignore case
+*.tar
+*.zip
+*.rar
+*.bat
