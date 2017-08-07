@@ -1,0 +1,49 @@
+{{define "root-style"}} {{end}} {{define "root-body"}}
+<div class="breadcrumbs ace-save-state" id="breadcrumbs">
+    <ul class="breadcrumb">
+        <li>
+            <i class="ace-icon fa fa-home home-icon"></i>
+            <a href="/">Home</a>
+        </li>
+        <li class="active">Fams Dashboard</li>
+    </ul>
+    <!-- /.breadcrumb -->
+
+    <div class="nav-search" id="nav-search">
+        <form class="form-search">
+            <span class="input-icon">
+                <input type="text" id="searchGoogle" placeholder="Google Search ..." class="nav-search-input" id="nav-search-input" autocomplete="off" />
+                <i class="ace-icon fa fa-search nav-search-icon"></i>
+            </span>
+        </form>
+    </div>
+    <!-- /.nav-search -->
+</div>
+
+<div class="page-content">
+    <div class="page-header">
+        <h1>
+            FAMS Dashboard
+        </h1>
+    </div>
+    <!-- /.page-header -->
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="row">
+
+            </div>
+        </div>
+    </div>
+</div>
+{{end}} {{define "root-script"}}
+<script>
+    $(document).ready(function() {
+        $("#searchGoogle").keypress(function(e) {
+            if (e.which == 13) {
+                window.open('http://www.google.com/search?q=' + $("#searchGoogle").val(), '_blank');
+                return false;
+            }
+        });
+    });
+</script>
+{{end}}

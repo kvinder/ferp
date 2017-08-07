@@ -1,0 +1,122 @@
+{{define "root-style"}} {{end}} {{define "root-body"}}
+<div class="breadcrumbs ace-save-state" id="breadcrumbs">
+    <ul class="breadcrumb">
+        <li>
+            <i class="ace-icon fa fa-home home-icon"></i>
+            <a href="/">Home</a>
+        </li>
+        <li class="active">Admin</li>
+        <li class="active">User</li>
+    </ul>
+    <!-- /.breadcrumb -->
+
+    <div class="nav-search" id="nav-search">
+        <form class="form-search">
+            <span class="input-icon">
+                <input type="text" id="searchGoogle" placeholder="Google Search ..." class="nav-search-input" id="nav-search-input" autocomplete="off" />
+                <i class="ace-icon fa fa-search nav-search-icon"></i>
+            </span>
+        </form>
+    </div>
+    <!-- /.nav-search -->
+</div>
+
+<div class="page-content">
+    <div class="page-header">
+        <h1>
+            User detail
+        </h1>
+    </div>
+
+    <!-- /.page-header -->
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="widget-box">
+                        <div class="widget-header">
+                            <h4 class="widget-title">
+                                <i class="ace-icon fa fa-keyboard-o green"></i> User Information
+                            </h4>
+                        </div>
+
+                        <div class="widget-body">
+                            <div class="widget-main no-padding">
+                                <form class="form-horizontal" method="POST" enctype="multipart/form-data">
+                                    <fieldset>
+                                        <div class="form-group">
+                                            <label class="col-sm-2 control-label no-padding-right" for="form-field-employeeId"> Employee ID </label>
+                                            <div class="col-sm-9">
+                                                <label></label>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-2 control-label no-padding-right" for="form-field-username"> Username </label>
+                                            <div class="col-sm-9">
+                                                <label></label>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-2 control-label no-padding-right" for="form-field-password"> Password </label>
+                                            <div class="col-sm-9">
+                                                <label></label>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-2 control-label no-padding-right" for="form-field-name"> Name </label>
+                                            <div class="col-sm-9">
+                                                <label></label>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-2 control-label no-padding-right" for="form-field-sex"> Sex </label>
+                                            <div class="col-sm-9">
+                                                <label></label>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-2 control-label no-padding-right" for="form-field-department"> Department </label>
+                                            <div class="col-sm-9">
+                                                <label></label>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-2 control-label no-padding-right" for="form-field-email"> Email </label>
+                                            <div class="col-sm-9">
+                                                <label></label>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-2 control-label no-padding-right" for="form-field-telephone"> Telephone Number </label>
+                                            <div class="col-sm-9">
+                                                <label></label>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-2 control-label no-padding-right"> Role </label>
+                                            <div class="col-sm-9">
+                                                <label></label>
+                                            </div>
+                                        </div>
+                                    </fieldset>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{{end}} {{define "root-script"}}
+<script>
+    $(document).ready(function() {
+        $("#searchGoogle").keypress(function(e) {
+            if (e.which == 13) {
+                window.open('http://www.google.com/search?q=' + $("#searchGoogle").val(), '_blank');
+                return false;
+            }
+        });
+    });
+</script>
+{{end}}
