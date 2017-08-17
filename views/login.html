@@ -34,8 +34,11 @@
                     <div class="widget-box">
                         <div class="widget-header center">
                             <h4 class="widget-title">
-                                <i class="ace-icon fa fa-coffee green"></i> Please Login
+                                <i class="ace-icon fa fa-key green"></i> Please Login
                             </h4>
+                            {{if .loginFail}}
+                            <div class="error"><h5>{{.loginFail}}</h5></div>
+                            {{end}}
                         </div>
 
                         <div class="widget-body">
@@ -45,13 +48,13 @@
                                         <div class="form-group">
                                             <label class="col-sm-3 control-label no-padding-right" for="form-field-username"> Username </label>
                                             <div class="col-sm-9">
-                                                <input type="text" id="form-field-username" placeholder="Username" class="form-control" required />
+                                                <input type="text" id="form-field-username" name="form-field-username" placeholder="Username" class="form-control" required />
                                             </div>
                                         </div>
                                         <div class="form-group">
                                             <label class="col-sm-3 control-label no-padding-right" for="form-field-password"> Password </label>
                                             <div class="col-sm-9">
-                                                <input type="password" id="form-field-password" placeholder="Password" class="form-control" required />
+                                                <input type="password" id="form-field-password" name="form-field-password" placeholder="Password" class="form-control" required />
                                             </div>
                                         </div>
                                     </fieldset>
@@ -59,7 +62,7 @@
                                     <div class="form-actions center">
                                         <button type="submit" class="btn btn-sm btn-success">
                                             Login
-                                            <i class="ace-icon fa fa-key icon-on-right bigger-110"></i>
+                                            <i class="ace-icon fa fa-unlock icon-on-right bigger-110"></i>
                                         </button>
                                     </div>
                                 </form>

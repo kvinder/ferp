@@ -6,7 +6,7 @@
             <a href="/">Home</a>
         </li>
         <li class="active">Admin</li>
-        <li class="active">create user</li>
+        <li class="active">Update user</li>
     </ul>
     <!-- /.breadcrumb -->
 
@@ -24,7 +24,7 @@
 <div class="page-content">
     <div class="page-header">
         <h1>
-            Admin create user
+            Admin update user
         </h1>
     </div>
 
@@ -42,18 +42,19 @@
 
                         <div class="widget-body">
                             <div class="widget-main no-padding">
-                                <form class="form-horizontal" method="POST" enctype="multipart/form-data">
+                                <form class="form-horizontal" method="POST" action="/admin/user/update" enctype="multipart/form-data">
                                     <fieldset>
                                         <div class="form-group">
                                             <label class="col-sm-2 control-label no-padding-right" for="form-field-employeeId"> Employee ID </label>
                                             <div class="col-sm-9">
-                                                <input type="text" id="form-field-employeeId" name="field-employeeId" placeholder="Employee ID" class="form-control" required />
+                                                <input type="text" id="form-field-employeeId" name="field-employeeId" placeholder="Employee ID" class="form-control" value="{{.update.EmployeeID}}" required />
+                                                <input type="text" id="form-field-ID" name="field-ID" class="hidden" value="{{.update.ID}}">
                                             </div>
                                         </div>
                                         <div class="form-group">
                                             <label class="col-sm-2 control-label no-padding-right" for="form-field-username"> Username </label>
                                             <div class="col-sm-9">
-                                                <input type="text" id="form-field-username" name="field-username" placeholder="Username" class="form-control" required />
+                                                <input type="text" id="form-field-username" name="field-username" placeholder="Username" class="form-control" value="{{.update.Username}}" required />
                                             </div>
                                         </div>
                                         <div class="form-group">
@@ -65,15 +66,15 @@
                                         <div class="form-group">
                                             <label class="col-sm-2 control-label no-padding-right" for="form-field-name"> Name </label>
                                             <div class="col-sm-9">
-                                                <input type="text" id="form-field-name" name="field-name" placeholder="Name" class="form-control" required />
+                                                <input type="text" id="form-field-name" name="field-name" placeholder="Name" class="form-control" value="{{.update.Name}}" required />
                                             </div>
                                         </div>
                                         <div class="form-group">
                                             <label class="col-sm-2 control-label no-padding-right" for="form-field-sex"> Sex </label>
                                             <div class="col-sm-9">
                                                 <select class="form-control" name="field-sex" id="form-field-sex">
-                                                    <option>Male</option>
-                                                    <option>Female</option>
+                                                    <option value="Male">Male</option>
+                                                    <option value="Female">Female</option>
                                                 </select>
                                             </div>
                                         </div>
@@ -81,25 +82,25 @@
                                             <label class="col-sm-2 control-label no-padding-right" for="form-field-department"> Department </label>
                                             <div class="col-sm-9">
                                                 <select class="form-control" name="field-department" id="form-field-department">
-                                                    <option>QA</option>
-                                                    <option>Engineer</option>
-                                                    <option>Purchase</option>
-                                                    <option>MIS</option>
-                                                    <option>Sale</option>
-                                                    <option>Other</option>
+                                                    <option value="QA">QA</option>
+                                                    <option value="Engineer">Engineer</option>
+                                                    <option value="Purchase">Purchase</option>
+                                                    <option value="MIS">MIS</option>
+                                                    <option value="Sale">Sale</option>
+                                                    <option value="Other">Other</option>
                                                 </select>
                                             </div>
                                         </div>
                                         <div class="form-group">
                                             <label class="col-sm-2 control-label no-padding-right" for="form-field-email"> Email </label>
                                             <div class="col-sm-9">
-                                                <input type="email" id="form-field-email" name="field-email" placeholder="Email" class="form-control" required />
+                                                <input type="email" id="form-field-email" name="field-email" placeholder="Email" class="form-control" value="{{.update.Email}}" required />
                                             </div>
                                         </div>
                                         <div class="form-group">
                                             <label class="col-sm-2 control-label no-padding-right" for="form-field-telephone"> Telephone Number </label>
                                             <div class="col-sm-9">
-                                                <input type="text" id="form-field-telephone" name="field-telephone" placeholder="Telephone Number" class="form-control" required />
+                                                <input type="text" id="form-field-telephone" name="field-telephone" placeholder="Telephone Number" class="form-control" value="{{.update.Telephone}}" required />
                                             </div>
                                         </div>
                                         <div class="form-group">
@@ -152,7 +153,7 @@
                                     </fieldset>
                                     <div class="form-actions center">
                                         <button type="submit" class="btn btn-sm btn-info">
-                                            Create
+                                            Update
                                             <i class="ace-icon fa fa-user-plus icon-on-right bigger-110"></i>
                                         </button>
                                     </div>
@@ -172,6 +173,14 @@
             if (e.which == 13) {
                 window.open('http://www.google.com/search?q=' + $("#searchGoogle").val(), '_blank');
                 return false;
+            }
+        });
+        $('#form-field-sex option[value={{.update.Sex}}]').attr('selected','selected');
+        $('#form-field-department option[value={{.update.Department}}]').attr('selected','selected');
+        var str = "{{ .update.Roles }}";
+        $('input[name="field-checkbox"]').each(function() {
+            if(str.indexOf(this.value) > -1) {
+                $(this).attr('checked', true);
             }
         });
     });

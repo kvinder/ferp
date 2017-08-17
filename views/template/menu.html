@@ -60,7 +60,7 @@
 
                     <b class="arrow"></b>
                 </li>
-
+                {{if or .Sale_Co .Sale_Out .Admin}}
                 <li class="{{.fams_request}}">
                     <a href="/fams/request">
                         <i class="menu-icon fa fa-caret-right"></i> FA Request
@@ -68,8 +68,10 @@
 
                     <b class="arrow"></b>
                 </li>
+                {{end}}
             </ul>
         </li>
+        {{if .Admin}}
         <li class="{{.admin}}">
             <a href="#" class="dropdown-toggle">
                 <i class="menu-icon fa fa-list"></i>
@@ -97,6 +99,7 @@
                 </li>
             </ul>
         </li>
+        {{end}}
     </ul>
     <div class="sidebar-toggle sidebar-collapse" id="sidebar-collapse">
         <i id="sidebar-toggle-icon" class="ace-icon fa fa-angle-double-left ace-save-state" data-icon1="ace-icon fa fa-angle-double-left" data-icon2="ace-icon fa fa-angle-double-right"></i>

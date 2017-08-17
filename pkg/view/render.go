@@ -31,3 +31,13 @@ func AdminCreateUser(w http.ResponseWriter, data interface{}) {
 func AdminList(w http.ResponseWriter, data interface{}) {
 	render(parseTemplate("admin/list.html"), w, data)
 }
+
+// AdminUser render view
+func AdminUser(w http.ResponseWriter, data interface{}) {
+	render(parseTemplate("admin/user.html"), w, data)
+}
+
+// AdminUpdateUser render view
+func AdminUpdateUser(w http.ResponseWriter, data interface{}) {
+	render(parseTemplate("admin/update.html"), w, data)
+}

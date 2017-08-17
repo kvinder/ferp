@@ -19,9 +19,24 @@
             <li class="light-blue">
                 <a data-toggle="dropdown" href="#" class="dropdown-toggle">
                     <img class="nav-user-photo" src="/-/assets/images/avatars/avatar2.png" alt="Jason's Photo" />
-
+                    {{if .nameLogin}}
+                    <span class="user-info">
+                        <small>Welcome,</small>
+                        {{.nameLogin}}
+                    </span>
+                    {{end}}
                     <i class="ace-icon fa fa-caret-down"></i>
                 </a>
+                {{if .nameLogin}}
+                <ul class="user-menu dropdown-menu-right dropdown-menu dropdown-yellow dropdown-caret dropdown-close">
+                    <li>
+                        <a href="/logout">
+							Logout
+						</a>
+                    </li>
+                </ul>
+                {{end}}
+                {{if not .nameLogin}}
                 <ul class="user-menu dropdown-menu-right dropdown-menu dropdown-yellow dropdown-caret dropdown-close">
                     <li>
                         <a href="/login">
@@ -29,6 +44,7 @@
 						</a>
                     </li>
                 </ul>
+                {{end}}
             </li>
         </ul>
     </div>
