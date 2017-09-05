@@ -43,6 +43,42 @@
 
             <b class="arrow"></b>
         </li>
+        <li class="{{.ims}}">
+            <a href="#" class="dropdown-toggle">
+                <i class="menu-icon fa fa-list"></i>
+                <span class="menu-text"> IMS </span>
+
+                <b class="arrow fa fa-angle-down"></b>
+            </a>
+            <b class="arrow"></b>
+
+            <ul class="submenu">
+                <li class="{{.ims_dashboard}}">
+                    <a href="/ims/dashboard">
+                        <i class="menu-icon fa fa-caret-right"></i> IMS Dashboard
+                    </a>
+
+                    <b class="arrow"></b>
+                </li>
+                {{if or .QA_LINE .QA_Engineer .QA_FA .QA_OFFICE .Admin}}
+                <li class="{{.ims_create_master_ii}}">
+                    <a href="/ims/createmasterii">
+                        <i class="menu-icon fa fa-caret-right"></i> Create Master II
+                    </a>
+
+                    <b class="arrow"></b>
+                </li>
+                {{end}}
+                <li class="{{.ims_waitting_approve_master_ii}}">
+                    <a href="/ims/waittingapproveii">
+                        <i class="menu-icon fa fa-caret-right"></i> Wait Approve Master II
+                    </a>
+
+                    <b class="arrow"></b>
+                </li>
+            </ul>
+        </li>
+        {{if or .Sale_Co .Sale_Out .Admin}}
         <li class="{{.fams}}">
             <a href="#" class="dropdown-toggle">
                 <i class="menu-icon fa fa-list"></i>
@@ -60,10 +96,37 @@
 
                     <b class="arrow"></b>
                 </li>
-                {{if or .Sale_Co .Sale_Out .Admin}}
                 <li class="{{.fams_request}}">
                     <a href="/fams/request">
                         <i class="menu-icon fa fa-caret-right"></i> FA Request
+                    </a>
+
+                    <b class="arrow"></b>
+                </li>
+            </ul>
+        </li>
+        {{end}}
+        <li class="{{.customer}}">
+            <a href="#" class="dropdown-toggle">
+                <i class="menu-icon fa fa-list"></i>
+                <span class="menu-text"> Customer </span>
+
+                <b class="arrow fa fa-angle-down"></b>
+            </a>
+            <b class="arrow"></b>
+
+            <ul class="submenu">
+                <li class="{{.customer_dashboard}}">
+                    <a href="/customer/dashboard">
+                        <i class="menu-icon fa fa-caret-right"></i> Customer Dashboard
+                    </a>
+
+                    <b class="arrow"></b>
+                </li>
+                {{if or .Sale_Co .Sale_Out .Admin .QA_FA .QA_Engineer .QA_OFFICE}}
+                <li class="{{.customer_create}}">
+                    <a href="/customer/create">
+                        <i class="menu-icon fa fa-caret-right"></i> Create Customer
                     </a>
 
                     <b class="arrow"></b>

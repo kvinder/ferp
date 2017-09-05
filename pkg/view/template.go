@@ -26,22 +26,18 @@ func init() {
 
 func joinTemplateDir(files ...string) []string {
 	dirLevel1 := "views"
-	dirLevel2 := "template"
 	r := make([]string, len(files))
 	for i, f := range files {
 		r[i] = filepath.Join(dirLevel1, f)
-		if f == "root.html" || f == "header.html" || f == "menu.html" {
-			r[i] = filepath.Join(dirLevel1, dirLevel2, f)
-		}
 	}
 	return r
 }
 
 func parseTemplate(file string) *template.Template {
 	rootTemplate := []string{
-		"root.html",
-		"header.html",
-		"menu.html",
+		"template/root.html",
+		"template/header.html",
+		"template/menu.html",
 	}
 	filesOutput := joinTemplateDir(append(rootTemplate, file)...)
 	t := template.New("")

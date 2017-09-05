@@ -14,6 +14,10 @@ func adminCreate(w http.ResponseWriter, r *http.Request) {
 		http.Redirect(w, r, "/login", http.StatusSeeOther)
 		return
 	}
+	if !checkRole("Admin", userOnLogin.Roles) {
+		http.Redirect(w, r, "/", http.StatusSeeOther)
+		return
+	}
 	if r.Method == http.MethodPost {
 		t := time.Now()
 		now := t.Format("2006-01-02 15:04:05")
@@ -34,14 +38,11 @@ func adminCreate(w http.ResponseWriter, r *http.Request) {
 		http.Redirect(w, r, "/admin/list", http.StatusSeeOther)
 		return
 	}
-	if !checkRole("Admin", userOnLogin.Roles) {
-		http.Redirect(w, r, "/", http.StatusSeeOther)
-		return
-	}
 	data := map[string]interface{}{
 		"admin":        "active open",
 		"admin_create": "active",
 		"nameLogin":    userOnLogin.Name,
+		"list_roles":   model.ListRoles(),
 	}
 	data = setAut(data, userOnLogin.Roles)
 	view.AdminCreateUser(w, data)
@@ -99,8 +100,9 @@ func adminUser(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	data := map[string]interface{}{
-		"admin":     "active open",
-		"nameLogin": userOnLogin.Name,
+		"admin":      "active open",
+		"list_roles": model.ListRoles(),
+		"nameLogin":  userOnLogin.Name,
 	}
 	if !checkRole("Admin", userOnLogin.Roles) {
 		http.Redirect(w, r, "/", http.StatusSeeOther)

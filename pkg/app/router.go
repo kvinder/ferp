@@ -1,6 +1,7 @@
 package app
 
 import (
+	"encoding/json"
 	"net/http"
 
 	"github.com/SermoDigital/jose/crypto"
@@ -17,6 +18,7 @@ func Router(mux *http.ServeMux) {
 	midelwareMux.HandleFunc("/login", login)
 	midelwareMux.HandleFunc("/logout", logout)
 	midelwareMux.HandleFunc("/fa/dashboard", famsDashboard)
+	midelwareMux.HandleFunc("/ims/dashboard", imsDashboard)
 
 	//Admin
 	midelwareMux.HandleFunc("/admin/create", adminCreate)
@@ -27,30 +29,54 @@ func Router(mux *http.ServeMux) {
 	//FAMS
 	midelwareMux.HandleFunc("/fams/request", famsRequest)
 
+	//ims
+	midelwareMux.HandleFunc("/ims/createmasterii", imsCreateMasterII)
+	midelwareMux.HandleFunc("/ims/waittingapproveii", imsWaittingApproveMasterII)
+	midelwareMux.HandleFunc("/ims/masterii", imsMasterII)
+	midelwareMux.HandleFunc("/ims/updatemasterii", imsUpdateMasterII)
+
+	//fileUpload
+	midelwareMux.HandleFunc("/file", downloadFile)
+
+	//customer
+	midelwareMux.HandleFunc("/customer/dashboard", customerDashboard)
+	midelwareMux.HandleFunc("/customer/create", customerCreate)
+	//customer JSON
+	midelwareMux.HandleFunc("/customer/findcustomer", findCustomersJSON)
+
 	mux.Handle("/", midelware(midelwareMux))
 
 }
 
 var pathNoNeedLogin = map[string]bool{
-	"/":                  true,
-	"/login":             true,
-	"/fa/dashboard":      true,
-	"/admin/create":      false,
-	"/admin/list":        false,
-	"/admin/user":        false,
-	"/admin/user/update": false,
-	"/fams/request":      false,
+	"/":                      true,
+	"/login":                 true,
+	"/fa/dashboard":          true,
+	"/file":                  true,
+	"/ims/masterii":          true,
+	"/ims/waittingapproveii": true,
+	"/admin/create":          false,
+	"/admin/list":            false,
+	"/admin/user":            false,
+	"/admin/user/update":     false,
+	"/fams/request":          false,
+	"/ims/dashboard":         true,
+	"/ims/createmasterii":    false,
+	"/ims/updatemasterii":    false,
+	"/customer/dashboard":    true,
+	"/customer/create":       false,
+	"/customer/findcustomer": false,
 }
 
 func midelware(h http.Handler) http.Handler {
 	fn := func(w http.ResponseWriter, r *http.Request) {
 		token, err := r.Cookie("token")
 		if err != nil {
-			if pathNoNeedLogin[r.RequestURI] {
+			if pathNoNeedLogin[r.URL.Path] {
 				h.ServeHTTP(w, r)
 				return
 			}
-			http.Redirect(w, r, "/login", http.StatusSeeOther)
+			http.NotFound(w, r)
 			return
 		}
 		dataClaims, err := tokenValidator(token.Value)
@@ -115,4 +141,15 @@ func checkRole(scompare string, list []string) bool {
 		}
 	}
 	return false
+}
+
+func bodyToJSON(r *http.Request) map[string]string {
+	body := map[string]string{}
+	decoder := json.NewDecoder(r.Body)
+	err := decoder.Decode(&body)
+	if err != nil {
+		panic(err)
+	}
+	r.Body.Close()
+	return body
 }

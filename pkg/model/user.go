@@ -3,6 +3,7 @@ package model
 import (
 	"fmt"
 	"net/http"
+	"strconv"
 
 	"golang.org/x/crypto/bcrypt"
 )
@@ -31,19 +32,23 @@ func CreateUser(user *User) {
 	checkErr(err)
 	sqlQuery := `INSERT INTO APP_USER (employee_id,username,password,name,sex,
 	department,email,telephone,createDate,updateDate) VALUES (?,?,?,?,?,?,?,?,?,?)`
-	_, err = db.Exec(sqlQuery, user.EmployeeID, user.Username, hashedPassword, user.Name, user.Sex, user.Department, user.Email, user.Telephone, user.CreateDate, user.UpdateDate)
+	result, err := db.Exec(sqlQuery, user.EmployeeID, user.Username, hashedPassword, user.Name, user.Sex, user.Department, user.Email, user.Telephone, user.CreateDate, user.UpdateDate)
 	checkErr(err)
-	sqlQuery = `SELECT ID FROM APP_USER WHERE Employee_ID = ?`
-	rows, err := db.Query(sqlQuery, user.EmployeeID)
+	appUserID, err := result.LastInsertId()
 	checkErr(err)
-	var appUserID int
-	for rows.Next() {
-		err = rows.Scan(&appUserID)
-	}
-	sqlQuery = `INSERT INTO APP_ROLE (role_name, createDate, updateDate, app_user) 
-	VALUES (?, ?, ?, ?)`
+	sqlQuery = `SELECT ID FROM APP_ROLE WHERE role_name = ?`
 	for _, role := range user.Roles {
-		_, err := db.Exec(sqlQuery, role, user.CreateDate, user.UpdateDate, appUserID)
+		rows, err := db.Query(sqlQuery, role)
+		checkErr(err)
+		var roleID string
+		if rows.Next() {
+			rows.Scan(&roleID)
+		}
+		rows.Close()
+		i, _ := strconv.Atoi(roleID)
+		checkErr(err)
+		sqlInsertRoles := `INSERT INTO APP_USERS_APP_ROLES (app_user,app_role) VALUES (?,?)`
+		_, err = db.Exec(sqlInsertRoles, int(appUserID), i)
 		checkErr(err)
 	}
 }
@@ -56,13 +61,22 @@ func UpdateUser(user *User) {
 	department = ?, email = ?, telephone = ?, updateDate = ? WHERE id = ?`
 	_, err = db.Exec(sqlQuery, user.EmployeeID, user.Username, hashedPassword, user.Name, user.Sex, user.Department, user.Email, user.Telephone, user.UpdateDate, user.ID)
 	checkErr(err)
-	sqlQuery = `DELETE FROM APP_ROLE WHERE app_user = ?`
+	sqlQuery = `DELETE FROM APP_USERS_APP_ROLES WHERE app_user = ?`
 	_, err = db.Exec(sqlQuery, user.ID)
 	checkErr(err)
-	sqlQuery = `INSERT INTO APP_ROLE (role_name, createDate, updateDate, app_user) 
-	VALUES (?, ?, ?, ?)`
+	sqlQuery = `SELECT ID FROM APP_ROLE WHERE role_name = ?`
 	for _, role := range user.Roles {
-		_, err := db.Exec(sqlQuery, role, user.UpdateDate, user.UpdateDate, user.ID)
+		rows, err := db.Query(sqlQuery, role)
+		checkErr(err)
+		var roleID string
+		if rows.Next() {
+			rows.Scan(&roleID)
+		}
+		rows.Close()
+		i, _ := strconv.Atoi(roleID)
+		checkErr(err)
+		sqlInsertRoles := `INSERT INTO APP_USERS_APP_ROLES (app_user,app_role) VALUES (?,?)`
+		_, err = db.Exec(sqlInsertRoles, user.ID, i)
 		checkErr(err)
 	}
 }
@@ -78,50 +92,70 @@ func ListUsers() []User {
 		checkErr(err)
 		allUser = append(allUser, user)
 	}
+	rows.Close()
 	return allUser
 }
 
 //GetUser database
 func GetUser(employeeID string) User {
-	sqlQuery := `SELECT ID,employee_id,username,password,name,sex,department,email,telephone,createDate,updateDate FROM APP_USER WHERE Employee_ID = ?`
+	sqlQuery := `
+	SELECT APP_USER.ID,APP_USER.employee_id,APP_USER.username,APP_USER.password,APP_USER.name,APP_USER.sex,APP_USER.department,
+	APP_USER.email, APP_USER.telephone,APP_USER.createDate,APP_USER.updateDate, APP_ROLE.role_name
+	FROM APP_USER,APP_USERS_APP_ROLES,APP_ROLE 
+	WHERE APP_USER.employee_id=? and APP_USERS_APP_ROLES.app_user = APP_USER.ID and APP_USERS_APP_ROLES.app_role = APP_ROLE.id
+	`
 	rowsAppUser, err := db.Query(sqlQuery, employeeID)
 	checkErr(err)
 	user := User{}
 	for rowsAppUser.Next() {
-		err = rowsAppUser.Scan(&user.ID, &user.EmployeeID, &user.Username, &user.Password, &user.Name, &user.Sex, &user.Department, &user.Email, &user.Telephone, &user.CreateDate, &user.UpdateDate)
-		checkErr(err)
-	}
-	sqlQuery = `SELECT role_name FROM APP_ROLE WHERE app_user = ?`
-	rowsAppRole, err := db.Query(sqlQuery, user.ID)
-	checkErr(err)
-	for rowsAppRole.Next() {
 		var roleName string
-		err = rowsAppRole.Scan(&roleName)
+		err = rowsAppUser.Scan(&user.ID, &user.EmployeeID, &user.Username, &user.Password, &user.Name, &user.Sex, &user.Department, &user.Email, &user.Telephone, &user.CreateDate, &user.UpdateDate, &roleName)
 		checkErr(err)
 		user.Roles = append(user.Roles, roleName)
 	}
+	rowsAppUser.Close()
+	return user
+}
+
+//GetUserByID database
+func GetUserByID(userID int) User {
+	sqlQuery := `
+	SELECT APP_USER.ID,APP_USER.employee_id,APP_USER.username,APP_USER.password,APP_USER.name,APP_USER.sex,APP_USER.department,
+	APP_USER.email, APP_USER.telephone,APP_USER.createDate,APP_USER.updateDate, APP_ROLE.role_name
+	FROM APP_USER,APP_USERS_APP_ROLES,APP_ROLE 
+	WHERE APP_USER.ID=? and APP_USERS_APP_ROLES.app_user = APP_USER.ID and APP_USERS_APP_ROLES.app_role = APP_ROLE.id
+	`
+	rowsAppUser, err := db.Query(sqlQuery, userID)
+	checkErr(err)
+	user := User{}
+	for rowsAppUser.Next() {
+		var roleName string
+		err = rowsAppUser.Scan(&user.ID, &user.EmployeeID, &user.Username, &user.Password, &user.Name, &user.Sex, &user.Department, &user.Email, &user.Telephone, &user.CreateDate, &user.UpdateDate, &roleName)
+		checkErr(err)
+		user.Roles = append(user.Roles, roleName)
+	}
+	rowsAppUser.Close()
 	return user
 }
 
 //GetByUsername database
 func GetByUsername(username string) User {
-	sqlQuery := `SELECT ID,employee_id,username,password,name,sex,department,email,telephone,createDate,updateDate FROM APP_USER WHERE username = ?`
+	sqlQuery := `
+	SELECT APP_USER.ID,APP_USER.employee_id,APP_USER.username,APP_USER.password,APP_USER.name,APP_USER.sex,APP_USER.department,
+	APP_USER.email, APP_USER.telephone,APP_USER.createDate,APP_USER.updateDate, APP_ROLE.role_name
+	FROM APP_USER,APP_USERS_APP_ROLES,APP_ROLE 
+	WHERE APP_USER.username=? and APP_USERS_APP_ROLES.app_user = APP_USER.ID and APP_USERS_APP_ROLES.app_role = APP_ROLE.id
+	`
 	rowsAppUser, err := db.Query(sqlQuery, username)
 	checkErr(err)
 	user := User{}
 	for rowsAppUser.Next() {
-		err = rowsAppUser.Scan(&user.ID, &user.EmployeeID, &user.Username, &user.Password, &user.Name, &user.Sex, &user.Department, &user.Email, &user.Telephone, &user.CreateDate, &user.UpdateDate)
-		checkErr(err)
-	}
-	sqlQuery = `SELECT role_name FROM APP_ROLE WHERE app_user = ?`
-	rowsAppRole, err := db.Query(sqlQuery, user.ID)
-	checkErr(err)
-	for rowsAppRole.Next() {
 		var roleName string
-		err = rowsAppRole.Scan(&roleName)
+		err = rowsAppUser.Scan(&user.ID, &user.EmployeeID, &user.Username, &user.Password, &user.Name, &user.Sex, &user.Department, &user.Email, &user.Telephone, &user.CreateDate, &user.UpdateDate, &roleName)
 		checkErr(err)
 		user.Roles = append(user.Roles, roleName)
 	}
+	rowsAppUser.Close()
 	return user
 }
 
