@@ -1,4 +1,6 @@
-{{define "root-style"}} {{end}} {{define "root-body"}}
+{{define "root-style"}}
+<link rel="stylesheet" href="/-/assets/css/bootstrap-datepicker3.min.css" />
+{{end}} {{define "root-body"}}
 <div class="breadcrumbs ace-save-state" id="breadcrumbs">
     <ul class="breadcrumb">
         <li>
@@ -29,15 +31,221 @@
     <!-- /.page-header -->
     <div class="row">
         <div class="col-xs-12">
-            <div class="row">
+            <form class="form-horizontal" role="form">
+                <div class="row">
+                    <div class="col-sm-6">
 
-            </div>
+                        <div class="form-group">
+                            <label for="inputCustomer" class="col-sm-3 control-label">Customer :</label>
+                            <div class="col-sm-9">
+                                <div class="input-group">
+                                    <input class="form-control input-group-sm ui-autocomplete-input" name="inputCustomer" id="inputCustomer" placeholder="Customer" autocomplete="off" required="" type="text">
+                                    <span class="input-group-addon">Search</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="inputPartNo" class="col-sm-3 control-label">Part No. :</label>
+                            <div class="col-sm-9">
+                                <input class="form-control input-group-sm" name="inputPartNo" id="inputPartNo" placeholder="Part Number" autocomplete="off" required="" type="text">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="inputPartName" class="col-sm-3 control-label">Part Name. :</label>
+                            <div class="col-sm-9">
+                                <input class="form-control input-group-sm" name="inputPartName" id="inputPartName" placeholder="Part Name" autocomplete="off" required="" type="text">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="inputRevision" class="col-sm-3 control-label">Revision :</label>
+                            <div class="col-sm-9">
+                                <input class="form-control input-group-sm" name="inputRevision" id="inputRevision" placeholder="Revision" autocomplete="off" required="" type="text">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="inputSaleOut" class="col-sm-3 control-label">Sale Out :</label>
+                            <div class="col-sm-9">
+                                <div class="input-group">
+                                    <input class="form-control input-group-sm ui-autocomplete-input" name="inputSaleOut" id="inputSaleOut" placeholder="Sale out door" autocomplete="off" required="" type="text">
+                                    <span class="input-group-addon">Search</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="inputQwsNo" class="col-sm-3 control-label">QWS No. :</label>
+                            <div class="col-sm-9">
+                                <input class="form-control input-group-sm" name="inputQwsNo" id="inputQwsNo" placeholder="Quatation Work Sheet Number" autocomplete="off" required="" type="text">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="inputApqpNo" class="col-sm-3 control-label">APQP No. :</label>
+                            <div class="col-sm-9">
+                                <input class="form-control input-group-sm" name="inputApqpNo" id="inputApqpNo" placeholder="APQP Number" autocomplete="off" required="" type="text">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="inputNeedDate" class="col-sm-3 control-label">Need Date :</label>
+                            <div class="col-sm-9">
+                                <div class="input-group">
+                                    <input class="form-control input-group-sm hasDatepicker" name="inputNeedDate" id="inputNeedDate" data-date-format="yyyy-mm-dd" placeholder="yyyy-mm-dd" autocomplete="off" required="" type="text">
+                                    <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="inputFaApprove" class="col-sm-3 control-label">FA Approve :</label>
+                            <div class="col-sm-9">
+                                <input class="form-control input-group-sm" name="inputFaApprove" id="inputFaApprove" placeholder="Qty" autocomplete="off" type="number">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="inputFaForSell" class="col-sm-3 control-label">FA For Sell :</label>
+                            <div class="col-sm-9">
+                                <input class="form-control input-group-sm" name="inputFaForSell" id="inputFaForSell" placeholder="Qty" autocomplete="off" type="number">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="inputSampleTest" class="col-sm-3 control-label">Sample Test :</label>
+                            <div class="col-sm-9">
+                                <input class="form-control input-group-sm" name="inputSampleTest" id="inputSampleTest" placeholder="Qty" autocomplete="off" type="number">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="inputSamplePcc" class="col-sm-3 control-label">Sample PCC :</label>
+                            <div class="col-sm-9">
+                                <input class="form-control input-group-sm" name="inputSamplePcc" id="inputSamplePcc" placeholder="Qty" autocomplete="off" type="number">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label for="inputMat1" class="col-sm-3 control-label">Material 1 :</label>
+                            <div class="col-sm-9">
+                                <div class="input-group">
+                                    <input class="form-control input-group-sm ui-autocomplete-input" id="inputMat1" placeholder="Material 1" autocomplete="off" required="" type="text">
+                                    <span class="input-group-addon">Search</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="inputMat2" class="col-sm-3 control-label">Material 2 :</label>
+                            <div class="col-sm-9">
+                                <div class="input-group">
+                                    <input class="form-control input-group-sm ui-autocomplete-input" id="inputMat2" placeholder="Material 2" autocomplete="off" type="text">
+                                    <span class="input-group-addon">Search</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="inputMat3" class="col-sm-3 control-label">Material 3 :</label>
+                            <div class="col-sm-9">
+                                <div class="input-group">
+                                    <input class="form-control input-group-sm ui-autocomplete-input" id="inputMat3" placeholder="Material 3" autocomplete="off" type="text">
+                                    <span class="input-group-addon">Search</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="inputMat4" class="col-sm-3 control-label">Material 4 :</label>
+                            <div class="col-sm-9">
+                                <div class="input-group">
+                                    <input class="form-control input-group-sm ui-autocomplete-input" id="inputMat4" placeholder="Material 4" autocomplete="off" type="text">
+                                    <span class="input-group-addon">Search</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="inputMat5" class="col-sm-3 control-label">Material 5 :</label>
+                            <div class="col-sm-9">
+                                <div class="input-group">
+                                    <input class="form-control input-group-sm ui-autocomplete-input" id="inputMat5" placeholder="Material 5" autocomplete="off" type="text">
+                                    <span class="input-group-addon">Search</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="inputMat6" class="col-sm-3 control-label">Material 6 :</label>
+                            <div class="col-sm-9">
+                                <div class="input-group">
+                                    <input class="form-control input-group-sm ui-autocomplete-input" id="inputMat6" placeholder="Material 6" autocomplete="off" type="text">
+                                    <span class="input-group-addon">Search</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">Document Request :</label>
+                            <div class="col-sm-9">
+                                <select id="inputDocumentRequest" class="form-control input-group-sm">
+                                    <option>No Need Data</option>
+                                    <option>Inspection Only</option>
+                                    <option>Full FA Package</option>
+                                    <option>PPAP</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="inputTools" class="col-sm-3 control-label">Tools :</label>
+                            <div class="col-sm-9">
+                                <select id="inputTools" class="form-control input-group-sm">
+                                    <option>Tooling</option>
+                                    <option>CNC</option>
+                                    <option>LASER</option>
+                                    <option>Other</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="inputRemark" class="col-sm-3 control-label">Remark :</label>
+                            <div class="col-sm-9">
+                                <textarea id="inputRemark" rows="2" class="form-control input-group-sm"></textarea>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="inputFile1" class="col-sm-3 control-label">Drawing :</label>
+                            <div class="col-sm-9 form-inline">
+                                <span><input id="inputFile1" type="file"></span>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="inputFile2" class="col-sm-3 control-label">Other File :</label>
+                            <div class="col-sm-9 form-inline">
+                                <span><input id="inputFile2" type="file"></span>
+                            </div>
+                        </div>
+                        <br>
+                        <div class="form-group">
+                            <div class="col-sm-offset-3 col-sm-9">
+                                <button type="submit" id="submit" class="btn btn-primary">Submit</button>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </form>
         </div>
     </div>
 </div>
-{{end}} {{define "root-script"}}
+{{end}}{{define "root-script"}}
+<script src="/-/assets/js/bootstrap-datepicker.min.js"></script>
 <script>
     $(document).ready(function() {
+        $("#inputNeedDate").datepicker({
+            autoclose: true,
+            todayHighlight: true
+        });
         $("#searchGoogle").keypress(function(e) {
             if (e.which == 13) {
                 window.open('http://www.google.com/search?q=' + $("#searchGoogle").val(), '_blank');

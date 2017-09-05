@@ -105,48 +105,14 @@
                                         <div class="form-group">
                                             <label class="col-sm-2 control-label no-padding-right"> Role </label>
                                             <div class="col-sm-9">
+                                                {{ range .list_roles }}
                                                 <div class="checkbox">
                                                     <label>
-														<input id="form-field-saleCo" name="field-checkbox" type="checkbox" value="Sale_Co" class="ace" />
-														<span class="lbl"> Sale Co </span>
+														<input id="form-field-saleCo" name="field-checkbox" type="checkbox" value="{{ .RoleName }}" class="ace" />
+														<span class="lbl"> {{ .RoleDescription }} </span>
 													</label>
                                                 </div>
-                                                <div class="checkbox">
-                                                    <label>
-														<input id="form-field-saleOut" name="field-checkbox" type="checkbox" value="Sale_Out" class="ace" />
-														<span class="lbl"> Sale Out </span>
-													</label>
-                                                </div>
-                                                <div class="checkbox">
-                                                    <label>
-														<input id="form-field-qa" name="field-checkbox" type="checkbox" value="QA_FA" class="ace" />
-														<span class="lbl"> QA FA </span>
-													</label>
-                                                </div>
-                                                <div class="checkbox">
-                                                    <label>
-														<input id="form-field-qaEngineer" name="field-checkbox" type="checkbox" value="QA_Engineer" class="ace" />
-														<span class="lbl"> QA Engineer </span>
-													</label>
-                                                </div>
-                                                <div class="checkbox">
-                                                    <label>
-														<input id="form-field-purchase" name="field-checkbox" type="checkbox" value="Purchase" class="ace" />
-														<span class="lbl"> Purchase </span>
-													</label>
-                                                </div>
-                                                <div class="checkbox">
-                                                    <label>
-														<input id="form-field-engineer" name="field-checkbox" type="checkbox" value="Engineer" class="ace" />
-														<span class="lbl"> Engineer </span>
-													</label>
-                                                </div>
-                                                <div class="checkbox">
-                                                    <label>
-														<input id="form-field-admin" name="field-checkbox" type="checkbox" value="Admin" class="ace" />
-														<span class="lbl"> Admin </span>
-													</label>
-                                                </div>
+                                                {{ end }}
                                             </div>
                                         </div>
                                     </fieldset>

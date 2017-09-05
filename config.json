@@ -1,5 +1,6 @@
 {
     "port":"8080",
     "databaseName":"sqlite3",
-    "databaseURL":"./database.sqlite"
+    "databaseURL":"./database.sqlite",
+    "setUpDatabase":"create"
 }

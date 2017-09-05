@@ -1,0 +1,308 @@
+{{define "root-style"}}
+<link rel="stylesheet" href="/-/jquery-ui-1.12.1/jquery-ui.min.css">
+{{end}} {{define "root-body"}}
+<div class="breadcrumbs ace-save-state" id="breadcrumbs">
+    <ul class="breadcrumb">
+        <li>
+            <i class="ace-icon fa fa-home home-icon"></i>
+            <a href="/">Home</a>
+        </li>
+        <li class="active">ims update master ii</li>
+    </ul>
+    <!-- /.breadcrumb -->
+
+    <div class="nav-search" id="nav-search">
+        <form class="form-search">
+            <span class="input-icon">
+                <input type="text" id="searchGoogle" placeholder="Google Search ..." class="nav-search-input" id="nav-search-input" autocomplete="off" />
+                <i class="ace-icon fa fa-search nav-search-icon"></i>
+            </span>
+        </form>
+    </div>
+    <!-- /.nav-search -->
+</div>
+
+<div class="page-content">
+    <div class="page-header">
+        <h1>
+            Update Master Inspection Instruction
+        </h1>
+    </div>
+    <!-- /.page-header -->
+    <div class="row">
+        <div class="col-xs-12">
+            <form class="form-horizontal" action="/ims/updatemasterii" id="formII" method="POST" enctype="multipart/form-data" role="form">
+                <div class="row">
+                    <div class="col-sm-10">
+
+                        <div class="form-group">
+                            <label for="inputCustomer" class="col-sm-3 control-label">MI Number :</label>
+                            <div class="col-sm-9">
+                                <label class="form-control-static">{{.detail.MINumber}}</label>
+                                <input class="hidden" name="id" type="text" value="{{.detail.ID}}">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="inputCustomer" class="col-sm-3 control-label">Customer :</label>
+                            <div class="col-sm-9">
+                                <div class="input-group">
+                                    <input class="form-control input-group-sm ui-autocomplete-input" name="inputCustomer" id="inputCustomer" placeholder="Customer" value="{{.detail.CustomerMaterII.Name}}" autocomplete="off" required="" type="text">
+                                    <span class="input-group-addon">Search</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="inputPartNo" class="col-sm-3 control-label">Part No. :</label>
+                            <div class="col-sm-9">
+                                <input class="form-control input-group-sm" name="inputPartNo" id="inputPartNo" placeholder="Part Number" autocomplete="off" value="{{.detail.PartNumber}}" required="" type="text">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="inputPartName" class="col-sm-3 control-label">Part Name. :</label>
+                            <div class="col-sm-9">
+                                <input class="form-control input-group-sm" name="inputPartName" id="inputPartName" placeholder="Part Name" autocomplete="off" value="{{.detail.PartName}}" required="" type="text">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="inputRevision" class="col-sm-3 control-label">Revision :</label>
+                            <div class="col-sm-9">
+                                <input class="form-control input-group-sm" name="inputRevision" id="inputRevision" placeholder="Revision" autocomplete="off" value="{{.detail.Revision}}" required="" type="text">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="id-input-file-1" class="col-sm-3 control-label">Drawing :</label>
+                            <div class="col-sm-9">
+                                {{if ne .detail.Drawing.ID 0}}
+                                <input type="text" class="hidden" name="currentFile1" id="currentFile1" value="yes">
+                                <div class="alert alert-success" role="alert">
+                                    <button id="alertFile1" type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                    <a href="/file?file={{.detail.Drawing.ID}}" target="_blank" class="alert-link">{{.detail.Drawing.FileName}} <span class="glyphicon glyphicon-download-alt" aria-hidden="true"></span></a>
+                                </div>
+                                <div id="fileInput1" class="hidden">
+                                    <input type="file" name="id-input-file-1" id="id-input-file-1" />
+                                </div>
+                                {{end}}
+                                {{if eq .detail.Drawing.ID 0}}
+                                <input type="file" name="id-input-file-1" id="id-input-file-1" />
+                                {{end}}
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="id-input-file-2" class="col-sm-3 control-label">Inspection :</label>
+                            <div class="col-sm-9">
+                                {{if ne .detail.Inspection.ID 0}}
+                                <input type="text" class="hidden" name="currentFile2" id="currenFile2" value="yes">
+                                <div class="alert alert-success" role="alert">
+                                    <button id="alertFile2" type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                    <a href="/file?file={{.detail.Inspection.ID}}" target="_blank" class="alert-link">{{.detail.Inspection.FileName}} <span class="glyphicon glyphicon-download-alt" aria-hidden="true"></span></a>
+                                </div>
+                                <div id="fileInput2" class="hidden">
+                                    <input type="file" name="id-input-file-2" id="id-input-file-2" />
+                                </div>
+                                {{end}}
+                                {{if eq .detail.Inspection.ID 0}}
+                                <input type="file" name="id-input-file-2" id="id-input-file-2" />
+                                {{end}}
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            {{if ne .detail.File3.ID 0}}
+                            <div class="col-sm-offset-1 col-sm-2">
+                                <input class="form-control input-group-sm" name="inputFile1" id="inputFile1" placeholder="File1" value="{{.detail.TextFile3}}" autocomplete="off" type="text">
+                            </div>
+                            <div class="col-sm-9">
+                                <input type="text" class="hidden" name="currentFile3" id="currentFile3" value="yes">
+                                <div class="alert alert-success" role="alert">
+                                    <button id="alertFile3" type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                    <a href="/file?file={{.detail.File3.ID}}" target="_blank" class="alert-link">{{.detail.File3.FileName}} <span class="glyphicon glyphicon-download-alt" aria-hidden="true"></span></a>
+                                </div>
+                                <div id="fileInput3" class="hidden">
+                                    <input type="file" name="id-input-file-3" id="id-input-file-3" />
+                                </div>
+                            </div>
+                            {{end}}
+                            {{if eq .detail.File3.ID 0}}
+                            <div class="col-sm-offset-1 col-sm-2">
+                                <input class="form-control input-group-sm" name="inputFile1" id="inputFile1" placeholder="File1" autocomplete="off" type="text">
+                            </div>
+                            <div class="col-sm-9">
+                                <input type="file" name="id-input-file-3" id="id-input-file-3" />
+                            </div>
+                            {{end}}
+                        </div>
+
+                        <div class="form-group">
+                            {{if ne .detail.File4.ID 0}}
+                            <div class="col-sm-offset-1 col-sm-2">
+                                <input class="form-control input-group-sm" name="inputFile2" id="inputFile2" placeholder="File2" value="{{.detail.TextFile4}}" autocomplete="off" type="text">
+                            </div>
+                            <div class="col-sm-9">
+                                <input type="text" class="hidden" name="currentFile4" id="currentFile4" value="yes">
+                                <div class="alert alert-success" role="alert">
+                                    <button id="alertFile4" type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                    <a href="/file?file={{.detail.Inspection.ID}}" target="_blank" class="alert-link">{{.detail.File4.FileName}} <span class="glyphicon glyphicon-download-alt" aria-hidden="true"></span></a>
+                                </div>
+                                <div id="fileInput4" class="hidden">
+                                    <input type="file" name="id-input-file-4" id="id-input-file-4" />
+                                </div>
+                            </div>
+                            {{end}}
+                            {{if eq .detail.File4.ID 0}}
+                            <div class="col-sm-offset-1 col-sm-2">
+                                <input class="form-control input-group-sm" name="inputFile2" id="inputFile2" placeholder="File2" autocomplete="off" type="text">
+                            </div>
+                            <div class="col-sm-9">
+                                <input type="file" name="id-input-file-4" id="id-input-file-4" />
+                            </div>
+                            {{end}}
+                        </div>
+
+                        <div class="form-group">
+                            {{if ne .detail.File5.ID 0}}
+                            <div class="col-sm-offset-1 col-sm-2">
+                                <input class="form-control input-group-sm" name="inputFile3" id="inputFile3" placeholder="File3" value="{{.detail.TextFile5}}" autocomplete="off" type="text">
+                            </div>
+                            <div class="col-sm-9">
+                                <input type="text" class="hidden" name="currentFile5" id="currentFile5" value="yes">
+                                <div class="alert alert-success" role="alert">
+                                    <button id="alertFile5" type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                    <a href="/file?file={{.detail.File5.ID}}" target="_blank" class="alert-link">{{.detail.File5.FileName}} <span class="glyphicon glyphicon-download-alt" aria-hidden="true"></span></a>
+                                </div>
+                                <div id="fileInput5" class="hidden">
+                                    <input type="file" name="id-input-file-5" id="id-input-file-5" />
+                                </div>
+                            </div>
+                            {{end}}
+                            {{if eq .detail.File5.ID 0}}
+                            <div class="col-sm-offset-1 col-sm-2">
+                                <input class="form-control input-group-sm" name="inputFile3" id="inputFile3" placeholder="File3" autocomplete="off" type="text">
+                            </div>
+                            <div class="col-sm-9">
+                                <input type="file" name="id-input-file-5" id="id-input-file-5" />
+                            </div>
+                            {{end}}
+                        </div>
+                        
+                        <div class="form-group">
+                            <div class="col-sm-offset-3 col-sm-9">
+                                <button type="submit" id="submit" class="btn btn-primary">Update</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{{end}}{{define "root-script"}}
+<script src="/-/jquery-ui-1.12.1/jquery-ui.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $("#searchGoogle").keypress(function(e) {
+            if (e.which == 13) {
+                window.open('http://www.google.com/search?q=' + $("#searchGoogle").val(), '_blank');
+                return false;
+            }
+        });
+        $('#id-input-file-1, #id-input-file-2, #id-input-file-3, #id-input-file-4, #id-input-file-5').ace_file_input({
+            no_file:'No File ...',
+            btn_choose:'Choose',
+            btn_change:'Change',
+            droppable:false,
+            onchange:null,
+            thumbnail:false 
+        });
+
+        $("#inputCustomer").on("keyup", function (){
+            var formData = {
+                "customer": $("#inputCustomer").val()
+            }
+            var customers = [];
+            $.ajax({
+                type: "POST",
+                url: "/customer/findcustomer",
+                processData: false,
+                async: true,
+                data: JSON.stringify(formData),
+                success: function(data){
+                    if(data["customer"] != null) {
+                        $.each(data["customer"], function(i, item) {
+                            customers.push(item);
+                        });
+                        $("#inputCustomer").autocomplete({
+                            source: customers
+                        });
+                    } else {
+                        customers = [];
+                        $("#inputCustomer").autocomplete({
+                            source: customers
+                        });
+                    }
+                },
+                error: function(data){
+                    alert("server not found");
+                    return false;
+                }
+            });
+        });
+
+        $("#inputCustomer").on('change keyup paste',function() {
+            var customerInput = $("#inputCustomer").val();
+            var formData = {
+                "customer": customerInput
+            }
+            $.ajax({
+                type: "POST",
+                url: "/customer/findcustomer",
+                processData: false,
+                async: true,
+                data: JSON.stringify(formData),
+                success: function(data){
+                    console.log(data);
+                    if(data["customer"] != null) {
+                        if(data["customer"][0] == customerInput) {
+                            $("#submit").prop("disabled", false); 
+                        } else {
+                            $("#submit").prop("disabled", true); 
+                        }
+                    } else {
+                        $("#submit").prop("disabled", true); 
+                    }
+                },
+                error: function(data){
+                    alert("server not found");
+                    return false;
+                }
+            });
+        });
+
+        $("#alertFile1").click(function () {
+            $("#fileInput1").removeClass("hidden");
+            $("#currentFile1").val("no");
+        });
+        $("#alertFile2").click(function () {
+            $("#fileInput2").removeClass("hidden");
+            $("#currentFile2").val("no");
+        });
+        $("#alertFile3").click(function () {
+            $("#fileInput3").removeClass("hidden");
+            $("#currentFile3").val("no");
+        });
+        $("#alertFile4").click(function () {
+            $("#fileInput4").removeClass("hidden");
+            $("#currentFile4").val("no");
+        });
+        $("#alertFile5").click(function () {
+            $("#fileInput5").removeClass("hidden");
+            $("#currentFile5").val("no");
+        });
+    });
+</script>
+{{end}}

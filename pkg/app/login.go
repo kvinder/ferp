@@ -34,7 +34,7 @@ func login(w http.ResponseWriter, r *http.Request) {
 	http.SetCookie(w, &http.Cookie{
 		Name:     "token",
 		Value:    token,
-		MaxAge:   int(10000 * time.Minute / time.Second),
+		MaxAge:   int(24 * 60 * time.Minute / time.Second),
 		HttpOnly: true,
 		Path:     "/",
 	})

@@ -1,0 +1,79 @@
+{{define "root-style"}} {{end}} {{define "root-body"}}
+<div class="breadcrumbs ace-save-state" id="breadcrumbs">
+    <ul class="breadcrumb">
+        <li>
+            <i class="ace-icon fa fa-home home-icon"></i>
+            <a href="/">Home</a>
+        </li>
+        <li class="active">Add Cudtomer</li>
+    </ul>
+    <!-- /.breadcrumb -->
+
+    <div class="nav-search" id="nav-search">
+        <form class="form-search">
+            <span class="input-icon">
+                <input type="text" id="searchGoogle" placeholder="Google Search ..." class="nav-search-input" id="nav-search-input" autocomplete="off" />
+                <i class="ace-icon fa fa-search nav-search-icon"></i>
+            </span>
+        </form>
+    </div>
+    <!-- /.nav-search -->
+</div>
+
+<div class="page-content">
+    <div class="page-header">
+        <h1>
+            Create Customer
+        </h1>
+    </div>
+    <!-- /.page-header -->
+    <div class="row">
+        <div class="col-xs-12">
+            <form class="form-horizontal" method="POST" enctype="multipart/form-data" role="form">
+                <div class="row">
+                    <div class="col-sm-7">
+
+                        <div class="form-group">
+                            <label for="inputCustomer" class="col-sm-3 control-label">Customer :</label>
+                            <div class="col-sm-9">
+                                <input class="form-control input-group-sm ui-autocomplete-input" name="inputCustomer" id="inputCustomer" placeholder="Customer" autocomplete="off" required="" type="text">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="inputCustomerType" class="col-sm-3 control-label">Type :</label>
+                            <div class="col-sm-9">
+                                <select class="form-control" name="inputCustomerType" id="inputCustomerType">
+                                    <option>Electronics</option>
+                                    <option>Automotive</option>
+                                    <option>Cosmetic</option>
+                                    <option>HDD</option>
+                                    <option>Consumer</option>
+                                    <option>General</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-sm-offset-3 col-sm-9">
+                                <button type="submit" id="submit" class="btn btn-primary">Submit</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{{end}} {{define "root-script"}}
+<script>
+    $(document).ready(function() {
+        $("#searchGoogle").keypress(function(e) {
+            if (e.which == 13) {
+                window.open('http://www.google.com/search?q=' + $("#searchGoogle").val(), '_blank');
+                return false;
+            }
+        });
+    });
+</script>
+{{end}}

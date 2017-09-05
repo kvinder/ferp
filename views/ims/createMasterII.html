@@ -1,0 +1,203 @@
+{{define "root-style"}}
+<link rel="stylesheet" href="/-/jquery-ui-1.12.1/jquery-ui.min.css">
+{{end}} {{define "root-body"}}
+<div class="breadcrumbs ace-save-state" id="breadcrumbs">
+    <ul class="breadcrumb">
+        <li>
+            <i class="ace-icon fa fa-home home-icon"></i>
+            <a href="/">Home</a>
+        </li>
+        <li class="active">ims create master ii</li>
+    </ul>
+    <!-- /.breadcrumb -->
+
+    <div class="nav-search" id="nav-search">
+        <form class="form-search">
+            <span class="input-icon">
+                <input type="text" id="searchGoogle" placeholder="Google Search ..." class="nav-search-input" id="nav-search-input" autocomplete="off" />
+                <i class="ace-icon fa fa-search nav-search-icon"></i>
+            </span>
+        </form>
+    </div>
+    <!-- /.nav-search -->
+</div>
+
+<div class="page-content">
+    <div class="page-header">
+        <h1>
+            Create Master Inspection Instruction
+        </h1>
+    </div>
+    <!-- /.page-header -->
+    <div class="row">
+        <div class="col-xs-12">
+            <form class="form-horizontal" id="formII" method="POST" enctype="multipart/form-data" role="form">
+                <div class="row">
+                    <div class="col-sm-10">
+
+                        <div class="form-group">
+                            <label for="inputCustomer" class="col-sm-3 control-label">Customer :</label>
+                            <div class="col-sm-9">
+                                <div class="input-group">
+                                    <input class="form-control input-group-sm ui-autocomplete-input" name="inputCustomer" id="inputCustomer" placeholder="Customer" autocomplete="off" required="" type="text">
+                                    <span class="input-group-addon">Search</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="inputPartNo" class="col-sm-3 control-label">Part No. :</label>
+                            <div class="col-sm-9">
+                                <input class="form-control input-group-sm" name="inputPartNo" id="inputPartNo" placeholder="Part Number" autocomplete="off" required="" type="text">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="inputPartName" class="col-sm-3 control-label">Part Name. :</label>
+                            <div class="col-sm-9">
+                                <input class="form-control input-group-sm" name="inputPartName" id="inputPartName" placeholder="Part Name" autocomplete="off" required="" type="text">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="inputRevision" class="col-sm-3 control-label">Revision :</label>
+                            <div class="col-sm-9">
+                                <input class="form-control input-group-sm" name="inputRevision" id="inputRevision" placeholder="Revision" autocomplete="off" required="" type="text">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="id-input-file-1" class="col-sm-3 control-label">Drawing :</label>
+                            <div class="col-sm-9">
+                                <input type="file" name="id-input-file-1" id="id-input-file-1" />
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="id-input-file-2" class="col-sm-3 control-label">Inspection :</label>
+                            <div class="col-sm-9">
+                                <input type="file" name="id-input-file-2" id="id-input-file-2" />
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-sm-offset-1 col-sm-2">
+                                <input class="form-control input-group-sm" name="inputFile1" id="inputFile1" placeholder="File1" autocomplete="off" type="text">
+                            </div>
+                            <div class="col-sm-9">
+                                <input type="file" name="id-input-file-3" id="id-input-file-3" />
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-sm-offset-1 col-sm-2">
+                                <input class="form-control input-group-sm" name="inputFile2" id="inputFile2" placeholder="File2" autocomplete="off" type="text">
+                            </div>
+                            <div class="col-sm-9">
+                                <input type="file" name="id-input-file-4" id="id-input-file-4" />
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-sm-offset-1 col-sm-2">
+                                <input class="form-control input-group-sm" name="inputFile3" id="inputFile3" placeholder="File3" autocomplete="off" type="text">
+                            </div>
+                            <div class="col-sm-9">
+                                <input type="file" name="id-input-file-5" id="id-input-file-5" />
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <div class="col-sm-offset-3 col-sm-9">
+                                <button type="submit" id="submit" class="btn btn-primary" disabled>Submit</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{{end}}{{define "root-script"}}
+<script src="/-/jquery-ui-1.12.1/jquery-ui.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $("#searchGoogle").keypress(function(e) {
+            if (e.which == 13) {
+                window.open('http://www.google.com/search?q=' + $("#searchGoogle").val(), '_blank');
+                return false;
+            }
+        });
+        $('#id-input-file-1, #id-input-file-2, #id-input-file-3, #id-input-file-4, #id-input-file-5').ace_file_input({
+            no_file:'No File ...',
+            btn_choose:'Choose',
+            btn_change:'Change',
+            droppable:false,
+            onchange:null,
+            thumbnail:false 
+        });
+
+        $("#inputCustomer").on("keyup", function (){
+            var formData = {
+                "customer": $("#inputCustomer").val()
+            }
+            var customers = [];
+            $.ajax({
+                type: "POST",
+                url: "/customer/findcustomer",
+                processData: false,
+                async: true,
+                data: JSON.stringify(formData),
+                success: function(data){
+                    if(data["customer"] != null) {
+                        $.each(data["customer"], function(i, item) {
+                            customers.push(item);
+                        });
+                        $("#inputCustomer").autocomplete({
+                            source: customers
+                        });
+                    } else {
+                        customers = [];
+                        $("#inputCustomer").autocomplete({
+                            source: customers
+                        });
+                    }
+                },
+                error: function(data){
+                    alert("server not found");
+                    return false;
+                }
+            });
+        });
+
+        $("#inputCustomer").change(function() {
+            var customerInput = $("#inputCustomer").val();
+            var formData = {
+                "customer": customerInput
+            }
+            $.ajax({
+                type: "POST",
+                url: "/customer/findcustomer",
+                processData: false,
+                async: true,
+                data: JSON.stringify(formData),
+                success: function(data){
+                    if(data["customer"] != null) {
+                        if(data["customer"][0] == customerInput) {
+                            $("#submit").prop("disabled", false); 
+                        } else {
+                            $("#submit").prop("disabled", true); 
+                        }
+                    } else {
+                        $("#submit").prop("disabled", true); 
+                    }
+                },
+                error: function(data){
+                    alert("server not found");
+                    return false;
+                }
+            });
+        });
+    });
+</script>
+{{end}}

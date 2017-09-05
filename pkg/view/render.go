@@ -41,3 +41,38 @@ func AdminUser(w http.ResponseWriter, data interface{}) {
 func AdminUpdateUser(w http.ResponseWriter, data interface{}) {
 	render(parseTemplate("admin/update.html"), w, data)
 }
+
+// ImsDashboard render view
+func ImsDashboard(w http.ResponseWriter, data interface{}) {
+	render(parseTemplate("ims/dashboard.html"), w, data)
+}
+
+// ImsCreateMasterII render view
+func ImsCreateMasterII(w http.ResponseWriter, data interface{}) {
+	render(parseTemplate("ims/createMasterII.html"), w, data)
+}
+
+// ImsMasterIIDetail render view
+func ImsMasterIIDetail(w http.ResponseWriter, data interface{}) {
+	render(parseTemplate("ims/masteriiDetail.html"), w, data)
+}
+
+// ImsWaittingApproveMasterII render view
+func ImsWaittingApproveMasterII(w http.ResponseWriter, data interface{}) {
+	render(parseTemplate("ims/waittingApproveMasterII.html"), w, data)
+}
+
+// ImsUpdateMasterII render view
+func ImsUpdateMasterII(w http.ResponseWriter, data interface{}) {
+	render(parseTemplate("ims/updateMasterII.html"), w, data)
+}
+
+// CustomerDashboard render view
+func CustomerDashboard(w http.ResponseWriter, data interface{}) {
+	render(parseTemplate("customer/dashboard.html"), w, data)
+}
+
+// CustomerCreate render view
+func CustomerCreate(w http.ResponseWriter, data interface{}) {
+	render(parseTemplate("customer/create.html"), w, data)
+}
