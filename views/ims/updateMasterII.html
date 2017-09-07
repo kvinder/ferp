@@ -189,15 +189,69 @@
                             </div>
                             {{end}}
                         </div>
-                        
+                        <input type="text" name="statusInput" id="statusInput" class="hidden">
                         <div class="form-group">
                             <div class="col-sm-offset-3 col-sm-9">
-                                <button type="submit" id="submit" class="btn btn-primary">Update</button>
+                                <button type="button" id="btnUpdate" class="btn btn-primary">Update</button>
+                                &nbsp; &nbsp; &nbsp;
+                                <button type="button" id="btnDelete" class="btn btn-danger">Delete</button>
                             </div>
                         </div>
+
+                        <div class="modal fade" id="alertDeleteModal" role="dialog">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button>
+                                        <h4 class="modal-title">Delete</h4>
+                                    </div>
+                                    <div class="modal-body">
+                                        Confirm delete
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-danger" id="btnDeleteModle">confirm</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
                     </div>
                 </div>
             </form>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="panel-body table-responsive">
+                <table id="simple-table" class="table  table-bordered table-hover">
+                    <caption>History</caption>
+                    <thead>
+                    <tr>
+                        <th>Update Date</th>
+                        <th>Status</th>
+                        <th>Remark</th>
+                        <th>Update By</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                        {{ range $value := .detail.HistoryMI }}
+                        <tr>
+                            <td>{{$value.CreateDate}}</td>
+                            <td>
+                                {{if eq $value.Status "CREATE_MASTER_II"}}
+                                <span class="label label-info">create</span>
+                                {{end}}
+                                {{if eq $value.Status "UPDATE_MASTER_II"}}
+                                <span class="label label-default">update</span>
+                                {{end}}
+                            </td>
+                            <td>{{$value.Remark}}</td>
+                            <td>{{$value.CreateBy.Name}}</td>
+                        </tr>
+                        {{end}}
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 </div>
@@ -302,6 +356,21 @@
         $("#alertFile5").click(function () {
             $("#fileInput5").removeClass("hidden");
             $("#currentFile5").val("no");
+        });
+
+        $("#btnDelete").click(function() {
+            $("#statusInput").val("DELETE_MASTER_II");
+            $("#alertDeleteModal").modal({show:true});
+        });
+
+        $("#btnDeleteModle").click(function() {
+            $("#statusInput").val("DELETE_MASTER_II");
+            $("#formII").submit();
+        });
+
+        $("#btnUpdate").click(function() {
+            $("#statusInput").val("UPDATE_MASTER_II");
+            $("#formII").submit();
         });
     });
 </script>

@@ -1,4 +1,6 @@
-{{define "root-style"}} {{end}} {{define "root-body"}}
+{{define "root-style"}}
+<link rel="stylesheet" href="/-/jquery-ui-1.12.1/jquery-ui.min.css">
+{{end}} {{define "root-body"}}
 <div class="breadcrumbs ace-save-state" id="breadcrumbs">
     <ul class="breadcrumb">
         <li>
@@ -23,132 +25,210 @@
 <div class="page-content">
     <div class="page-header">
         <h1>
-            Waitting Approve Master Inspection
+            Master Inspection Waitting Approve
         </h1>
     </div>
-
     <!-- /.page-header -->
     <div class="row">
         <div class="col-xs-12">
-            <div class="row">
-                <div class="col-sm-12">
-                    <div class="clearfix">
-                        <div class="pull-right tableTools-container"></div>
-                    </div>
-                    <div class="table-header">
-                        Results for "Waitting Approve master inspection"
-                    </div>
-                    <div class="table-responsive">
-                        <table id="dynamic-table" class="table table-striped table-bordered table-hover">
-                            <thead>
-                                <tr>
-                                    <th class="center">
-                                        <label class="pos-rel">
-                                            <input type="checkbox" class="ace" />
-                                            <span class="lbl"></span>
-                                        </label>
-                                    </th>
-                                    <th>MI Number</th>
-                                    <th>Ctrate Date</th>
-                                    <th>Customer</th>
-                                    <th>Part Number </th>
-                                    <th>Revision</th>
-                                    <th>Create By</th>
-                                    <th>Status</th>
-                                    <th></th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                            {{ range $idx, $foo := .masterIIListWaitApprove}}
-                            <tr>
-                                <td class="center">
-                                    <label class="pos-rel">
-                                        <input type="checkbox" class="ace" />
-                                        <span class="lbl"></span>
-                                    </label>
-                                </td>
-                                <td>
-                                    {{$foo.MINumber}}
-                                </td>
-                                <td>
-                                    {{$foo.CreateDate}}
-                                </td>
-                                <td>
-                                    {{$foo.CustomerMaterII.Name}}
-                                </td>
-                                <td>
-                                    {{$foo.PartNumber}}
-                                </td>
-                                <td>
-                                    {{$foo.Revision}}
-                                </td>
-                                <td>
-                                    {{$foo.CreateBy.Name}}
-                                </td>
-                                <td>
-                                    {{if eq $foo.Status "CREATE_MASTER_II"}}
-                                    <span class="label label-info">create</span>
-                                    {{end}}
-                                    {{if eq $foo.Status "UPDATE_MASTER_II"}}
-                                    <span class="label label-info">update</span>
-                                    {{end}}
-                                </td>
-                                <td>
-                                    <div class="hidden-sm hidden-xs action-buttons">
-                                        <a class="blue" href="/ims/masterii?detail={{.ID}}">
-                                            <i class="ace-icon fa fa-search-plus bigger-130"></i>
-                                        </a>
-                                        {{if or $.QA_Engineer $.QA_FA $.Admin}}
-                                        <a class="green" href="/ims/masterii?update={{.ID}}">
-                                            <i class="ace-icon fa fa-pencil bigger-130"></i>
-                                        </a>
-                                        {{end}}
-                                    </div>
+            <form class="form-horizontal" action="/ims/approverejectmasterii" id="formII" method="POST" enctype="multipart/form-data" role="form">
+                <div class="row">
+                    <div class="col-sm-10">
+                        <input type="text" class="hidden" name="id" value="{{.detail.ID}}">
+                        <div class="form-group">
+                            <label for="inputCustomer" class="col-sm-3 control-label">MI Number :</label>
+                            <div class="col-sm-9">
+                                <label class="form-control-static">{{.detail.MINumber}}</label>
+                            </div>
+                        </div>
 
-                                    <div class="hidden-md hidden-lg">
-                                        <div class="inline pos-rel">
-                                            <button class="btn btn-minier btn-yellow dropdown-toggle" data-toggle="dropdown" data-position="auto">
-                                                <i class="ace-icon fa fa-caret-down icon-only bigger-120"></i>
-                                            </button>
+                        <div class="form-group">
+                            <label for="inputCustomer" class="col-sm-3 control-label">Customer :</label>
+                            <div class="col-sm-9">
+                                <label class="form-control-static">{{.detail.CustomerMaterII.Name}}</label>
+                            </div>
+                        </div>
 
-                                            <ul class="dropdown-menu dropdown-only-icon dropdown-yellow dropdown-menu-right dropdown-caret dropdown-close">
-                                                <li>
-                                                    <a href="/ims/masterii?detail={{.ID}}" class="tooltip-info" data-rel="tooltip" title="View">
-                                                        <span class="blue">
-                                                            <i class="ace-icon fa fa-search-plus bigger-120"></i>
-                                                        </span>
-                                                    </a>
-                                                </li>
+                        <div class="form-group">
+                            <label for="inputPartNo" class="col-sm-3 control-label">Part No. :</label>
+                            <div class="col-sm-9">
+                                <label class="form-control-static">{{.detail.PartNumber}}</label>                                    
+                            </div>
+                        </div>
 
-                                                <li>
-                                                    <a href="/ims/masterii?update={{.ID}}" class="tooltip-success" data-rel="tooltip" title="Edit">
-                                                        <span class="green">
-                                                            <i class="ace-icon fa fa-pencil-square-o bigger-120"></i>
-                                                        </span>
-                                                    </a>
-                                                </li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </td>
-                            </tr>
-                            {{end}}
-                            </tbody>
-                        </table>
+                        <div class="form-group">
+                            <label for="inputPartName" class="col-sm-3 control-label">Part Name. :</label>
+                            <div class="col-sm-9">
+                                <label class="form-control-static">{{.detail.PartName}}</label>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="inputRevision" class="col-sm-3 control-label">Revision :</label>
+                            <div class="col-sm-9">
+                                <label class="form-control-static">{{.detail.Revision}}</label>
+                            </div>
+                        </div>
+                        
+                        {{ $drawing := .detail.Drawing }}
+                        {{if ne $drawing.ID 0}} 
+                        <div class="form-group">
+                            <label for="id-input-file-1" class="col-sm-3 control-label">Drawing :</label>
+                            <div class="col-sm-9">
+                                <div class="alert alert-success" role="alert">
+                                    <a href="/file?file={{$drawing.ID}}" target="_blank" class="alert-link">{{$drawing.FileName}} <span class="glyphicon glyphicon-download-alt" aria-hidden="true"></span></a>
+                                </div>
+                            </div>
+                        </div>
+                        {{end}}
+
+                        {{ $inspection := .detail.Inspection }}
+                        {{if ne $inspection.ID 0}} 
+                        <div class="form-group">
+                            <label for="id-input-file-1" class="col-sm-3 control-label">Inspection :</label>
+                            <div class="col-sm-9">
+                                <div class="alert alert-success" role="alert">
+                                    <a href="/file?file={{$inspection.ID}}" target="_blank" class="alert-link">{{$inspection.FileName}} <span class="glyphicon glyphicon-download-alt" aria-hidden="true"></span></a>
+                                </div>
+                            </div>
+                        </div>
+                        {{end}}
+
+                        {{ $file3 := .detail.File3 }}
+                        {{if ne $file3.ID 0}} 
+                        <div class="form-group">
+                            <label for="id-input-file-1" class="col-sm-3 control-label">{{.detail.TextFile3}} :</label>
+                            <div class="col-sm-9">
+                                <div class="alert alert-success" role="alert">
+                                    <a href="/file?file={{$file3.ID}}" target="_blank" class="alert-link">{{$file3.FileName}} <span class="glyphicon glyphicon-download-alt" aria-hidden="true"></span></a>
+                                </div>
+                            </div>
+                        </div>
+                        {{end}}
+
+                        {{ $file4 := .detail.File4 }}
+                        {{if ne $file4.ID 0}} 
+                        <div class="form-group">
+                            <label for="id-input-file-1" class="col-sm-3 control-label">{{.detail.TextFile4}} :</label>
+                            <div class="col-sm-9">
+                                <div class="alert alert-success" role="alert">
+                                    <a href="/file?file={{$file4.ID}}" target="_blank" class="alert-link">{{$file4.FileName}} <span class="glyphicon glyphicon-download-alt" aria-hidden="true"></span></a>
+                                </div>
+                            </div>
+                        </div>
+                        {{end}}
+
+                        {{ $file5 := .detail.File5 }}
+                        {{if ne $file5.ID 0}} 
+                        <div class="form-group">
+                            <label for="id-input-file-1" class="col-sm-3 control-label">{{.detail.TextFile5}} :</label>
+                            <div class="col-sm-9">
+                                <div class="alert alert-success" role="alert">
+                                    <a href="/file?file={{$file5.ID}}" target="_blank" class="alert-link">{{$file5.FileName}} <span class="glyphicon glyphicon-download-alt" aria-hidden="true"></span></a>
+                                </div>
+                            </div>
+                        </div>
+                        {{end}}
+                        <div class="form-group">
+                            <div class="col-sm-offset-3 col-sm-9">
+                                <button type="button" id="btnApprove" class="btn btn-success">Approve</button>
+                                &nbsp; &nbsp; &nbsp;
+                                <button type="button" id="btnReject" class="btn btn-danger">Reject</button>
+                            </div>
+                        </div>
+                        <input type="text" class="hidden" name="approveOrReject" id="approveOrReject">
                     </div>
                 </div>
+
+                <div class="modal fade" id="alertApproveModal" role="dialog">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button>
+                                <h4 class="modal-title">Approve</h4>
+                            </div>
+                            <div class="modal-body">
+                                Confirm approve
+                            </div>
+                            <div class="modal-footer">
+                                <button type="submit" class="btn btn-success" id="btnApproveReason">confirm</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal fade" id="alertRejectModal" role="dialog">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button>
+                                <h4 class="modal-title">Reject Reason</h4>
+                            </div>
+                            <div class="modal-body">
+                                <textarea class="form-control" rows="3" name="inputReasonReject" id="inputReasonReject"></textarea>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="submit" class="btn btn-danger" id="btnRejectModal">reject</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </form>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="panel-body table-responsive">
+                <table id="simple-table" class="table  table-bordered table-hover">
+                    <caption>History</caption>
+                    <thead>
+                    <tr>
+                        <th>Update Date</th>
+                        <th>Status</th>
+                        <th>Remark</th>
+                        <th>Update By</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                        {{ range $value := .detail.HistoryMI }}
+                        <tr>
+                            <td>{{$value.CreateDate}}</td>
+                            <td>
+                                {{if eq $value.Status "CREATE_MASTER_II"}}
+                                <span class="label label-info">create</span>
+                                {{end}}
+                                {{if eq $value.Status "UPDATE_MASTER_II"}}
+                                <span class="label label-default">update</span>
+                                {{end}}
+                            </td>
+                            <td>{{$value.Remark}}</td>
+                            <td>{{$value.CreateBy.Name}}</td>
+                        </tr>
+                        {{end}}
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>
 </div>
-{{end}} {{define "root-script"}}
-<script src="/-/assets/js/jquery.dataTables.min.js"></script>
-<script src="/-/assets/js/jquery.dataTables.bootstrap.min.js"></script>
-<script src="/-/assets/js/dataTables.buttons.min.js"></script>
-<script src="/-/assets/js/buttons.html5.min.js"></script>
-<script src="/-/assets/js/buttons.print.min.js"></script>
-<script src="/-/assets/js/buttons.colVis.min.js"></script>
-<script src="/-/assets/js/dataTables.select.min.js"></script>
+<div class="modal fade" id="alertApproveModal" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button>
+                <h4 class="modal-title">Approve</h4>
+            </div>
+            <div class="modal-body">
+                Confirm approve
+            </div>
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-success" id="btnApproveReason">confirm</button>
+            </div>
+        </div>
+    </div>
+</div>
+{{end}}{{define "root-script"}}
 <script>
     $(document).ready(function() {
         $("#searchGoogle").keypress(function(e) {
@@ -158,144 +238,14 @@
             }
         });
 
-        var myTable =
-            $('#dynamic-table')
-            //.wrap("<div class='dataTables_borderWrap' />")   //if you are applying horizontal scrolling (sScrollX)
-            .DataTable({
-                bAutoWidth: false,
-                "aoColumns": [{
-                        "bSortable": false
-                    },
-                    null, null, null, null, null, null, null, {
-                        "bSortable": false
-                    }
-                ],
-                "aaSorting": [],
-                select: {
-                    style: 'multi'
-                }
-            });
-
-
-
-        $.fn.dataTable.Buttons.defaults.dom.container.className = 'dt-buttons btn-overlap btn-group btn-overlap';
-
-        new $.fn.dataTable.Buttons(myTable, {
-            buttons: [{
-                "extend": "colvis",
-                "text": "<i class='fa fa-search bigger-110 blue'></i> <span class='hidden'>Show/hide columns</span>",
-                "className": "btn btn-white btn-primary btn-bold",
-                columns: ':not(:first):not(:last)'
-            }, {
-                "extend": "copy",
-                "text": "<i class='fa fa-copy bigger-110 pink'></i> <span class='hidden'>Copy to clipboard</span>",
-                "className": "btn btn-white btn-primary btn-bold"
-            }, {
-                "extend": "csv",
-                "text": "<i class='fa fa-database bigger-110 orange'></i> <span class='hidden'>Export to CSV</span>",
-                "className": "btn btn-white btn-primary btn-bold"
-            }, {
-                "extend": "excel",
-                "text": "<i class='fa fa-file-excel-o bigger-110 green'></i> <span class='hidden'>Export to Excel</span>",
-                "className": "btn btn-white btn-primary btn-bold"
-            }, {
-                "extend": "pdf",
-                "text": "<i class='fa fa-file-pdf-o bigger-110 red'></i> <span class='hidden'>Export to PDF</span>",
-                "className": "btn btn-white btn-primary btn-bold"
-            }, {
-                "extend": "print",
-                "text": "<i class='fa fa-print bigger-110 grey'></i> <span class='hidden'>Print</span>",
-                "className": "btn btn-white btn-primary btn-bold",
-                autoPrint: false,
-                message: 'This print was produced using the Print button for DataTables'
-            }]
-        });
-        myTable.buttons().container().appendTo($('.tableTools-container'));
-
-        //style the message box
-        var defaultCopyAction = myTable.button(1).action();
-        myTable.button(1).action(function(e, dt, button, config) {
-            defaultCopyAction(e, dt, button, config);
-            $('.dt-button-info').addClass('gritter-item-wrapper gritter-info gritter-center white');
+        $("#btnApprove").click(function() {
+            $("#approveOrReject").val("APPROVE_MASTER_II");
+            $("#alertApproveModal").modal({show:true});
         });
 
-
-        var defaultColvisAction = myTable.button(0).action();
-        myTable.button(0).action(function(e, dt, button, config) {
-
-            defaultColvisAction(e, dt, button, config);
-
-
-            if ($('.dt-button-collection > .dropdown-menu').length == 0) {
-                $('.dt-button-collection')
-                    .wrapInner('<ul class="dropdown-menu dropdown-light dropdown-caret dropdown-caret" />')
-                    .find('a').attr('href', '#').wrap("<li />")
-            }
-            $('.dt-button-collection').appendTo('.tableTools-container .dt-buttons')
-        });
-
-        ////
-
-        setTimeout(function() {
-            $($('.tableTools-container')).find('a.dt-button').each(function() {
-                var div = $(this).find(' > div').first();
-                if (div.length == 1) div.tooltip({
-                    container: 'body',
-                    title: div.parent().text()
-                });
-                else $(this).tooltip({
-                    container: 'body',
-                    title: $(this).text()
-                });
-            });
-        }, 500);
-
-
-
-
-
-        myTable.on('select', function(e, dt, type, index) {
-            if (type === 'row') {
-                $(myTable.row(index).node()).find('input:checkbox').prop('checked', true);
-            }
-        });
-        myTable.on('deselect', function(e, dt, type, index) {
-            if (type === 'row') {
-                $(myTable.row(index).node()).find('input:checkbox').prop('checked', false);
-            }
-        });
-
-
-
-
-        /////////////////////////////////
-        //table checkboxes
-        $('th input[type=checkbox], td input[type=checkbox]').prop('checked', false);
-
-        //select/deselect all rows according to table header checkbox
-        $('#dynamic-table > thead > tr > th input[type=checkbox], #dynamic-table_wrapper input[type=checkbox]').eq(0).on('click', function() {
-            var th_checked = this.checked; //checkbox inside "TH" table header
-
-            $('#dynamic-table').find('tbody > tr').each(function() {
-                var row = this;
-                if (th_checked) myTable.row(row).select();
-                else myTable.row(row).deselect();
-            });
-        });
-
-        //select/deselect a row when the checkbox is checked/unchecked
-        $('#dynamic-table').on('click', 'td input[type=checkbox]', function() {
-            var row = $(this).closest('tr').get(0);
-            if (this.checked) myTable.row(row).deselect();
-            else myTable.row(row).select();
-        });
-
-
-
-        $(document).on('click', '#dynamic-table .dropdown-toggle', function(e) {
-            e.stopImmediatePropagation();
-            e.stopPropagation();
-            e.preventDefault();
+        $("#btnReject").click(function() {
+            $("#approveOrReject").val("REJECT_MASTER_II")
+            $("#alertRejectModal").modal({show:true});
         });
     });
 </script>

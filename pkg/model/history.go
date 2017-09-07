@@ -42,7 +42,7 @@ func CreateHistory(history History) {
 }
 
 //GetHistorys database
-func GetHistorys(masteriiID int) {
+func GetHistorys(masteriiID int) []History {
 	sqlQuery := `SELECT id,status,CreateBy,Remark,createDate,Drawing,Inspection,
 	file3,file4,file5,textFile3,textFile4,textFile5
 	FROM History WHERE MasterII = ?`
@@ -87,4 +87,5 @@ func GetHistorys(masteriiID int) {
 		historys = append(historys, h)
 	}
 	rowsHistorys.Close()
+	return historys
 }

@@ -2,6 +2,7 @@ package app
 
 import (
 	"encoding/json"
+	"ferp/pkg/model"
 	"net/http"
 
 	"github.com/SermoDigital/jose/crypto"
@@ -19,6 +20,9 @@ func Router(mux *http.ServeMux) {
 	midelwareMux.HandleFunc("/logout", logout)
 	midelwareMux.HandleFunc("/fa/dashboard", famsDashboard)
 	midelwareMux.HandleFunc("/ims/dashboard", imsDashboard)
+	midelwareMux.HandleFunc("/ims/waittingapproveii", imsWaittingApproveMasterIIList)
+	midelwareMux.HandleFunc("/ims/approveiilist", imsApproveMasterIIList)
+	midelwareMux.HandleFunc("/ims/rejectiilist", imsRejectMasterIIList)
 
 	//Admin
 	midelwareMux.HandleFunc("/admin/create", adminCreate)
@@ -31,9 +35,9 @@ func Router(mux *http.ServeMux) {
 
 	//ims
 	midelwareMux.HandleFunc("/ims/createmasterii", imsCreateMasterII)
-	midelwareMux.HandleFunc("/ims/waittingapproveii", imsWaittingApproveMasterII)
 	midelwareMux.HandleFunc("/ims/masterii", imsMasterII)
 	midelwareMux.HandleFunc("/ims/updatemasterii", imsUpdateMasterII)
+	midelwareMux.HandleFunc("/ims/approverejectmasterii", imsMasterIIApproveOrReject)
 
 	//fileUpload
 	midelwareMux.HandleFunc("/file", downloadFile)
@@ -49,23 +53,26 @@ func Router(mux *http.ServeMux) {
 }
 
 var pathNoNeedLogin = map[string]bool{
-	"/":                      true,
-	"/login":                 true,
-	"/fa/dashboard":          true,
-	"/file":                  true,
-	"/ims/masterii":          true,
-	"/ims/waittingapproveii": true,
-	"/admin/create":          false,
-	"/admin/list":            false,
-	"/admin/user":            false,
-	"/admin/user/update":     false,
-	"/fams/request":          false,
-	"/ims/dashboard":         true,
-	"/ims/createmasterii":    false,
-	"/ims/updatemasterii":    false,
-	"/customer/dashboard":    true,
-	"/customer/create":       false,
-	"/customer/findcustomer": false,
+	"/":                          true,
+	"/login":                     true,
+	"/fa/dashboard":              true,
+	"/file":                      true,
+	"/ims/masterii":              true,
+	"/ims/waittingapproveii":     true,
+	"/ims/approveiilist":         true,
+	"/ims/rejectiilist":          true,
+	"/admin/create":              false,
+	"/admin/list":                false,
+	"/admin/user":                false,
+	"/admin/user/update":         false,
+	"/fams/request":              false,
+	"/ims/dashboard":             true,
+	"/ims/createmasterii":        false,
+	"/ims/updatemasterii":        false,
+	"/ims/approverejectmasterii": false,
+	"/customer/dashboard":        true,
+	"/customer/create":           false,
+	"/customer/findcustomer":     false,
 }
 
 func midelware(h http.Handler) http.Handler {
@@ -152,4 +159,11 @@ func bodyToJSON(r *http.Request) map[string]string {
 	}
 	r.Body.Close()
 	return body
+}
+
+func checkAuthorization(scompares []string, user model.User, w http.ResponseWriter, r *http.Request) {
+	if !checkRoles(scompares, user.Roles) {
+		http.Redirect(w, r, "/", http.StatusSeeOther)
+		return
+	}
 }

@@ -75,9 +75,9 @@
                         <div class="form-group">
                             <label for="id-input-file-1" class="col-sm-3 control-label">Drawing :</label>
                             <div class="col-sm-9">
-                                <a class="btn btn-info" href="/file?file={{$drawing.ID}}" target="_blank" role="button">
-                                    <span class="glyphicon glyphicon-download-alt" aria-hidden="true"></span>
-                                </a>
+                                <div class="alert alert-success" role="alert">
+                                    <a href="/file?file={{$drawing.ID}}" target="_blank" class="alert-link">{{$drawing.FileName}} <span class="glyphicon glyphicon-download-alt" aria-hidden="true"></span></a>
+                                </div>
                             </div>
                         </div>
                         {{end}}
@@ -87,9 +87,9 @@
                         <div class="form-group">
                             <label for="id-input-file-1" class="col-sm-3 control-label">Inspection :</label>
                             <div class="col-sm-9">
-                                <a class="btn btn-info" href="/file?file={{$inspection.ID}}" target="_blank" role="button">
-                                    <span class="glyphicon glyphicon-download-alt" aria-hidden="true"></span>
-                                </a>
+                                <div class="alert alert-success" role="alert">
+                                    <a href="/file?file={{$inspection.ID}}" target="_blank" class="alert-link">{{$inspection.FileName}} <span class="glyphicon glyphicon-download-alt" aria-hidden="true"></span></a>
+                                </div>
                             </div>
                         </div>
                         {{end}}
@@ -99,9 +99,9 @@
                         <div class="form-group">
                             <label for="id-input-file-1" class="col-sm-3 control-label">{{.detail.TextFile3}} :</label>
                             <div class="col-sm-9">
-                                <a class="btn btn-info" href="/file?file={{$file3.ID}}" target="_blank" role="button">
-                                    <span class="glyphicon glyphicon-download-alt" aria-hidden="true"></span>
-                                </a>
+                                <div class="alert alert-success" role="alert">
+                                    <a href="/file?file={{$file3.ID}}" target="_blank" class="alert-link">{{$file3.FileName}} <span class="glyphicon glyphicon-download-alt" aria-hidden="true"></span></a>
+                                </div>
                             </div>
                         </div>
                         {{end}}
@@ -111,9 +111,9 @@
                         <div class="form-group">
                             <label for="id-input-file-1" class="col-sm-3 control-label">{{.detail.TextFile4}} :</label>
                             <div class="col-sm-9">
-                                <a class="btn btn-info" href="/file?file={{$file4.ID}}" target="_blank" role="button">
-                                    <span class="glyphicon glyphicon-download-alt" aria-hidden="true"></span>
-                                </a>
+                                <div class="alert alert-success" role="alert">
+                                    <a href="/file?file={{$file4.ID}}" target="_blank" class="alert-link">{{$file4.FileName}} <span class="glyphicon glyphicon-download-alt" aria-hidden="true"></span></a>
+                                </div>
                             </div>
                         </div>
                         {{end}}
@@ -123,15 +123,58 @@
                         <div class="form-group">
                             <label for="id-input-file-1" class="col-sm-3 control-label">{{.detail.TextFile5}} :</label>
                             <div class="col-sm-9">
-                                <a class="btn btn-info" href="/file?file={{$file5.ID}}" target="_blank" role="button">
-                                    <span class="glyphicon glyphicon-download-alt" aria-hidden="true"></span>
-                                </a>
+                                <div class="alert alert-success" role="alert">
+                                    <a href="/file?file={{$file5.ID}}" target="_blank" class="alert-link">{{$file5.FileName}} <span class="glyphicon glyphicon-download-alt" aria-hidden="true"></span></a>
+                                </div>
                             </div>
                         </div>
                         {{end}}
                     </div>
                 </div>
             </form>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="panel-body table-responsive">
+                <table id="simple-table" class="table  table-bordered table-hover">
+                    <caption>History</caption>
+                    <thead>
+                    <tr>
+                        <th>Update Date</th>
+                        <th>Status</th>
+                        <th>Remark</th>
+                        <th>Update By</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                        {{ range $value := .detail.HistoryMI }}
+                        <tr>
+                            <td>{{$value.CreateDate}}</td>
+                            <td>
+                                {{if eq $value.Status "CREATE_MASTER_II"}}
+                                <span class="label label-info">create</span>
+                                {{end}}
+                                {{if eq $value.Status "UPDATE_MASTER_II"}}
+                                <span class="label label-default">update</span>
+                                {{end}}
+                                {{if eq $value.Status "DELETE_MASTER_II"}}
+                                <span class="label label-danger">delete</span>
+                                {{end}}
+                                {{if eq $value.Status "APPROVE_MASTER_II"}}
+                                <span class="label label-success">approve</span>
+                                {{end}}
+                                {{if eq $value.Status "REJECT_MASTER_II"}}
+                                <span class="label label-danger">reject</span>
+                                {{end}}
+                            </td>
+                            <td>{{$value.Remark}}</td>
+                            <td>{{$value.CreateBy.Name}}</td>
+                        </tr>
+                        {{end}}
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 </div>

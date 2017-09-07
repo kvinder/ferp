@@ -28,7 +28,7 @@ func customerCreate(w http.ResponseWriter, r *http.Request) {
 		http.Redirect(w, r, "/login", http.StatusSeeOther)
 		return
 	}
-	if !checkRoles([]string{"Admin", "QA_LINE", "QA_FA", "QA_Engineer", "Sale_Co", "Sale_Out"}, userOnLogin.Roles) {
+	if !checkRoles([]string{"Admin", "QA_LINE", "QA_FA", "QA_OFFICE", "QA_Engineer", "Sale_Co", "Sale_Out"}, userOnLogin.Roles) {
 		http.Redirect(w, r, "/", http.StatusSeeOther)
 		return
 	}
@@ -62,7 +62,7 @@ func findCustomersJSON(w http.ResponseWriter, r *http.Request) {
 			http.Error(w, "Method Not Allowed", http.StatusMethodNotAllowed)
 			return
 		}
-		if !checkRoles([]string{"Admin", "QA_LINE", "QA_FA", "QA_Engineer", "Sale_Co", "Sale_Out"}, userOnLogin.Roles) {
+		if !checkRoles([]string{"Admin", "QA_LINE", "QA_OFFICE", "QA_FA", "QA_Engineer", "Sale_Co", "Sale_Out"}, userOnLogin.Roles) {
 			http.Error(w, "Method Not Allowed", http.StatusMethodNotAllowed)
 			return
 		}
