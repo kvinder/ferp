@@ -31,10 +31,8 @@ func imsCreateMasterII(w http.ResponseWriter, r *http.Request) {
 		data["nameLogin"] = userOnLogin.Name
 		data = setAut(data, userOnLogin.Roles)
 	}
-	if !checkRoles([]string{"Admin", "QA_LINE", "QA_OFFICE", "QA_Engineer", "QA_FA"}, userOnLogin.Roles) {
-		http.Redirect(w, r, "/", http.StatusSeeOther)
-		return
-	}
+
+	checkAuthorization([]string{"Admin", "QA_OFFICE", "QA_Engineer", "QA_FA"}, userOnLogin, w, r)
 	if r.Method == http.MethodPost {
 		fileDrawing, err := model.UploadFile(r, "id-input-file-1")
 		checkErr(err)
@@ -84,10 +82,7 @@ func imsUpdateMasterII(w http.ResponseWriter, r *http.Request) {
 		data["nameLogin"] = userOnLogin.Name
 		data = setAut(data, userOnLogin.Roles)
 	}
-	if !checkRoles([]string{"Admin", "QA_LINE", "QA_OFFICE", "QA_Engineer", "QA_FA"}, userOnLogin.Roles) {
-		http.Redirect(w, r, "/", http.StatusSeeOther)
-		return
-	}
+	checkAuthorization([]string{"Admin", "QA_OFFICE", "QA_Engineer", "QA_FA"}, userOnLogin, w, r)
 	if r.Method == http.MethodPost {
 		id := r.FormValue("id")
 		i, _ := strconv.Atoi(id)
@@ -127,7 +122,7 @@ func imsUpdateMasterII(w http.ResponseWriter, r *http.Request) {
 		currentMasterII.TextFile3 = r.FormValue("inputFile1")
 		currentMasterII.TextFile4 = r.FormValue("inputFile2")
 		currentMasterII.TextFile5 = r.FormValue("inputFile3")
-		currentMasterII.Status = "UPDATE_MASTER_II"
+		currentMasterII.Status = r.FormValue("statusInput")
 		currentMasterII.UpdateDate = now
 		currentMasterII.UpdateBy = userOnLogin
 		idRes := model.UpdateMasterInspection(currentMasterII)
@@ -143,18 +138,23 @@ func imsMasterII(w http.ResponseWriter, r *http.Request) {
 	}
 	detailID := r.URL.Query().Get("detail")
 	updateID := r.URL.Query().Get("update")
+	waitingapproveID := r.URL.Query().Get("waitingapprove")
 	userOnLogin, err := model.UserOnLogin(r)
 	if err == nil {
 		data["nameLogin"] = userOnLogin.Name
 		data = setAut(data, userOnLogin.Roles)
-		if len(detailID) == 0 && len(updateID) != 0 {
-			if !checkRoles([]string{"Admin", "QA_LINE", "QA_OFFICE", "QA_Engineer", "QA_FA"}, userOnLogin.Roles) {
-				http.Redirect(w, r, "/", http.StatusSeeOther)
-				return
-			}
+		if len(detailID) == 0 && len(waitingapproveID) == 0 && len(updateID) != 0 {
+			checkAuthorization([]string{"Admin", "QA_OFFICE", "QA_Engineer", "QA_FA"}, userOnLogin, w, r)
 			i, _ := strconv.Atoi(updateID)
 			data["detail"] = model.GetMasterII(i)
 			view.ImsUpdateMasterII(w, data)
+			return
+		}
+		if len(detailID) == 0 && len(waitingapproveID) != 0 && len(updateID) == 0 {
+			checkAuthorization([]string{"Admin", "QA_Engineer", "QA_FA"}, userOnLogin, w, r)
+			i, _ := strconv.Atoi(waitingapproveID)
+			data["detail"] = model.GetMasterII(i)
+			view.ImsWaittingApproveMasterII(w, data)
 			return
 		}
 	}
@@ -168,7 +168,33 @@ func imsMasterII(w http.ResponseWriter, r *http.Request) {
 	return
 }
 
-func imsWaittingApproveMasterII(w http.ResponseWriter, r *http.Request) {
+func imsMasterIIApproveOrReject(w http.ResponseWriter, r *http.Request) {
+	data := map[string]interface{}{
+		"ims": "active open",
+	}
+	userOnLogin, err := model.UserOnLogin(r)
+	if err == nil {
+		data["nameLogin"] = userOnLogin.Name
+		data = setAut(data, userOnLogin.Roles)
+	}
+	checkAuthorization([]string{"Admin", "QA_Engineer", "QA_FA"}, userOnLogin, w, r)
+	if r.Method == http.MethodPost {
+		id := r.FormValue("id")
+		i, _ := strconv.Atoi(id)
+		currentMasterII := model.GetMasterII(i)
+		currentMasterII.Status = r.FormValue("approveOrReject")
+		currentMasterII.Remark = r.FormValue("inputReasonReject")
+		currentMasterII.UpdateBy = userOnLogin
+		t := time.Now()
+		now := t.Format("2006-01-02 15:04:05")
+		currentMasterII.UpdateDate = now
+		idRes := model.UpdateMasterInspection(currentMasterII)
+		http.Redirect(w, r, "/ims/masterii?detail="+strconv.Itoa(idRes), http.StatusSeeOther)
+		return
+	}
+}
+
+func imsWaittingApproveMasterIIList(w http.ResponseWriter, r *http.Request) {
 	data := map[string]interface{}{
 		"ims": "active open",
 		"ims_waitting_approve_master_ii": "active",
@@ -178,8 +204,36 @@ func imsWaittingApproveMasterII(w http.ResponseWriter, r *http.Request) {
 		data["nameLogin"] = userOnLogin.Name
 		data = setAut(data, userOnLogin.Roles)
 	}
-	data["masterIIListWaitApprove"] = model.GetAllMasterIIByStatus("CREATE_MASTER_II")
-	view.ImsWaittingApproveMasterII(w, data)
+	data["masterIIListWaitApprove"] = model.GetAllMasterIIByStatusIn("CREATE_MASTER_II", "UPDATE_MASTER_II")
+	view.ImsWaittingApproveMasterIIList(w, data)
+}
+
+func imsApproveMasterIIList(w http.ResponseWriter, r *http.Request) {
+	data := map[string]interface{}{
+		"ims": "active open",
+		"ims_approve_master_ii": "active",
+	}
+	userOnLogin, err := model.UserOnLogin(r)
+	if err == nil {
+		data["nameLogin"] = userOnLogin.Name
+		data = setAut(data, userOnLogin.Roles)
+	}
+	data["masterIIApproveList"] = model.GetAllMasterIIByStatusIn("APPROVE_MASTER_II")
+	view.ImsApproveMasterIIList(w, data)
+}
+
+func imsRejectMasterIIList(w http.ResponseWriter, r *http.Request) {
+	data := map[string]interface{}{
+		"ims": "active open",
+		"ims_reject_master_ii": "active",
+	}
+	userOnLogin, err := model.UserOnLogin(r)
+	if err == nil {
+		data["nameLogin"] = userOnLogin.Name
+		data = setAut(data, userOnLogin.Roles)
+	}
+	data["masterIIRejectList"] = model.GetAllMasterIIByStatusIn("REJECT_MASTER_II")
+	view.ImsRejectMasterIIList(w, data)
 }
 
 func checkErr(err error) {

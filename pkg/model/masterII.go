@@ -1,6 +1,9 @@
 package model
 
-import "fmt"
+import (
+	"fmt"
+	"strings"
+)
 
 // MasterInspection type
 type MasterInspection struct {
@@ -21,6 +24,7 @@ type MasterInspection struct {
 	Status          string
 	CreateDate      string
 	UpdateDate      string
+	Remark          string
 	CreateBy        User
 	UpdateBy        User
 	HistoryMI       []History
@@ -100,12 +104,25 @@ func UpdateMasterInspection(masterII MasterInspection) int {
 		masterII.ID,
 	)
 	checkErr(err)
+	remarkHistory := ""
+	if masterII.Status == "UPDATE_MASTER_II" {
+		remarkHistory = "update master inspection"
+	}
+	if masterII.Status == "DELETE_MASTER_II" {
+		remarkHistory = "delete master inspection"
+	}
+	if masterII.Status == "APPROVE_MASTER_II" {
+		remarkHistory = "approve master inspection"
+	}
+	if masterII.Status == "REJECT_MASTER_II" {
+		remarkHistory = masterII.Remark
+	}
 	history := History{
 		MasterII:   masterII,
 		Status:     masterII.Status,
-		CreateBy:   masterII.CreateBy,
-		Remark:     "update master inspection",
-		CreateDate: masterII.CreateDate,
+		CreateBy:   masterII.UpdateBy,
+		Remark:     remarkHistory,
+		CreateDate: masterII.UpdateDate,
 		Drawing:    masterII.Drawing,
 		Inspection: masterII.Inspection,
 		File3:      masterII.File3,
@@ -171,16 +188,20 @@ func GetMasterII(id int) MasterInspection {
 	}
 	masII.CreateBy = GetUserByID(crateByID)
 	masII.UpdateBy = GetUserByID(updateByID)
-
+	masII.HistoryMI = GetHistorys(masII.ID)
 	return masII
 }
 
-//GetAllMasterIIByStatus getting
-func GetAllMasterIIByStatus(status string) []MasterInspection {
+//GetAllMasterIIByStatusIn getting
+func GetAllMasterIIByStatusIn(status ...string) []MasterInspection {
+	stuff := make([]interface{}, len(status))
+	for i, value := range status {
+		stuff[i] = value
+	}
 	sqlQuery := `SELECT id,MINumber,customer,partNumber,partName,revision,drawing,inspection,
 	file3,file4,file5,textFile3,textFile4,textFile5,status,createDate,updateDate,createBy,updateBy
-	FROM MASTERINSPECTION WHERE status = ?`
-	rowsMasterII, err := db.Query(sqlQuery, status)
+	FROM MASTERINSPECTION WHERE status in (?` + strings.Repeat(",?", len(status)-1) + `)`
+	rowsMasterII, err := db.Query(sqlQuery, stuff...)
 	checkErr(err)
 	var masterInspections []MasterInspection
 	var customerID, drawingID, inspectionID, file3ID, file4ID, file5ID, crateByID, updateByID int

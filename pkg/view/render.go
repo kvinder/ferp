@@ -57,14 +57,29 @@ func ImsMasterIIDetail(w http.ResponseWriter, data interface{}) {
 	render(parseTemplate("ims/masteriiDetail.html"), w, data)
 }
 
-// ImsWaittingApproveMasterII render view
-func ImsWaittingApproveMasterII(w http.ResponseWriter, data interface{}) {
-	render(parseTemplate("ims/waittingApproveMasterII.html"), w, data)
+// ImsWaittingApproveMasterIIList render view
+func ImsWaittingApproveMasterIIList(w http.ResponseWriter, data interface{}) {
+	render(parseTemplate("ims/waittingApproveMasterIIList.html"), w, data)
+}
+
+// ImsApproveMasterIIList render view
+func ImsApproveMasterIIList(w http.ResponseWriter, data interface{}) {
+	render(parseTemplate("ims/approveMasterIIList.html"), w, data)
+}
+
+// ImsRejectMasterIIList render view
+func ImsRejectMasterIIList(w http.ResponseWriter, data interface{}) {
+	render(parseTemplate("ims/rejectMasterIIList.html"), w, data)
 }
 
 // ImsUpdateMasterII render view
 func ImsUpdateMasterII(w http.ResponseWriter, data interface{}) {
 	render(parseTemplate("ims/updateMasterII.html"), w, data)
+}
+
+// ImsWaittingApproveMasterII render view
+func ImsWaittingApproveMasterII(w http.ResponseWriter, data interface{}) {
+	render(parseTemplate("ims/waittingApproveMasterII.html"), w, data)
 }
 
 // CustomerDashboard render view
