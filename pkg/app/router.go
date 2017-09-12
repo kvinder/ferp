@@ -23,6 +23,7 @@ func Router(mux *http.ServeMux) {
 	midelwareMux.HandleFunc("/ims/waittingapproveii", imsWaittingApproveMasterIIList)
 	midelwareMux.HandleFunc("/ims/approveiilist", imsApproveMasterIIList)
 	midelwareMux.HandleFunc("/ims/rejectiilist", imsRejectMasterIIList)
+	midelwareMux.HandleFunc("/ims/datainspection", imsUploadDataDetail)
 
 	//Admin
 	midelwareMux.HandleFunc("/admin/create", adminCreate)
@@ -38,6 +39,8 @@ func Router(mux *http.ServeMux) {
 	midelwareMux.HandleFunc("/ims/masterii", imsMasterII)
 	midelwareMux.HandleFunc("/ims/updatemasterii", imsUpdateMasterII)
 	midelwareMux.HandleFunc("/ims/approverejectmasterii", imsMasterIIApproveOrReject)
+	midelwareMux.HandleFunc("/ims/uploadiidatasearch", imsUploadIIDataSearch)
+	midelwareMux.HandleFunc("/ims/uploaddataii", imsUploadData)
 
 	//fileUpload
 	midelwareMux.HandleFunc("/file", downloadFile)
@@ -61,16 +64,19 @@ var pathNoNeedLogin = map[string]bool{
 	"/ims/waittingapproveii":     true,
 	"/ims/approveiilist":         true,
 	"/ims/rejectiilist":          true,
+	"/customer/dashboard":        true,
+	"/ims/dashboard":             true,
+	"/ims/datainspection":        true,
 	"/admin/create":              false,
 	"/admin/list":                false,
 	"/admin/user":                false,
 	"/admin/user/update":         false,
 	"/fams/request":              false,
-	"/ims/dashboard":             true,
 	"/ims/createmasterii":        false,
 	"/ims/updatemasterii":        false,
 	"/ims/approverejectmasterii": false,
-	"/customer/dashboard":        true,
+	"/ims/uploadiidatasearch":    false,
+	"/ims/uploaddataii":          false,
 	"/customer/create":           false,
 	"/customer/findcustomer":     false,
 }

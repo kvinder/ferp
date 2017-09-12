@@ -95,9 +95,25 @@ func CreateDatabase() {
 		CreateBy INTEGER DEFAULT NULL,
 		UpdateBy INTEGER DEFAULT NULL);
 
+		CREATE TABLE InspectionData (
+		ID INTEGER PRIMARY KEY AUTOINCREMENT,
+		INNumber varchar(255) DEFAULT NULL,
+		MasterII INTEGER DEFAULT NULL,
+		FileInspectionData INTEGER DEFAULT NULL,
+		workOrder varchar(255) DEFAULT NULL,
+		typeInspection varchar(255) DEFAULT NULL,
+		qtyInspection INTEGER DEFAULT NULL,
+		Status varchar(255) DEFAULT NULL,
+		remark varchar(255) DEFAULT NULL,
+		CreateDate datetime DEFAULT NULL,
+		UpdateDate datetime DEFAULT NULL,
+		CreateBy INTEGER DEFAULT NULL,
+		UpdateBy INTEGER DEFAULT NULL);
+
 		CREATE TABLE History (
 		ID INTEGER PRIMARY KEY AUTOINCREMENT,
 		MasterII INTEGER DEFAULT NULL,
+		InspectionData INTEGER DEFAULT NULL,
 		status varchar(255) DEFAULT NULL,
 		CreateBy INTEGER DEFAULT NULL,
 		Remark varchar(255) DEFAULT NULL,
@@ -109,7 +125,8 @@ func CreateDatabase() {
 		file5 INTEGER DEFAULT NULL,
 		textFile3 varchar(255) DEFAULT NULL,
 		textFile4 varchar(255) DEFAULT NULL,
-		textFile5 varchar(255) DEFAULT NULL);
+		textFile5 varchar(255) DEFAULT NULL,
+		FileInspectionData INTEGER DEFAULT NULL);
 	  `
 	_, err := db.Exec(sqlCreateTable)
 	checkErr(err)

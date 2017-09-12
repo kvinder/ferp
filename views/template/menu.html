@@ -60,7 +60,7 @@
 
                     <b class="arrow"></b>
                 </li>
-                {{if or .QA_LINE .QA_Engineer .QA_FA .QA_OFFICE .Admin}}
+                {{if or .QA_Engineer .QA_FA .QA_OFFICE .Admin}}
                 <li class="{{.ims_create_master_ii}}">
                     <a href="/ims/createmasterii">
                         <i class="menu-icon fa fa-caret-right"></i> Create Master II
@@ -90,6 +90,15 @@
 
                     <b class="arrow"></b>
                 </li>
+                {{if or .QA_LINE .QA_Engineer .QA_FA .QA_OFFICE .Admin .QA_LINE}}
+                <li class="{{.ims_upload_ii_data}}">
+                    <a href="/ims/uploadiidatasearch">
+                        <i class="menu-icon fa fa-caret-right"></i> Upload Inspection Data
+                    </a>
+
+                    <b class="arrow"></b>
+                </li>
+                {{end}}
             </ul>
         </li>
         {{if or .Sale_Co .Sale_Out .Admin}}
