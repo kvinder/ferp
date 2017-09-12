@@ -188,7 +188,7 @@ func GetMasterII(id int) MasterInspection {
 	}
 	masII.CreateBy = GetUserByID(crateByID)
 	masII.UpdateBy = GetUserByID(updateByID)
-	masII.HistoryMI = GetHistorys(masII.ID)
+	masII.HistoryMI = GetMasterIIHistorys(masII.ID)
 	return masII
 }
 

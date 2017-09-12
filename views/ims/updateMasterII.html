@@ -244,6 +244,15 @@
                                 {{if eq $value.Status "UPDATE_MASTER_II"}}
                                 <span class="label label-default">update</span>
                                 {{end}}
+                                {{if eq $value.Status "DELETE_MASTER_II"}}
+                                <span class="label label-danger">delete</span>
+                                {{end}}
+                                {{if eq $value.Status "APPROVE_MASTER_II"}}
+                                <span class="label label-success">approve</span>
+                                {{end}}
+                                {{if eq $value.Status "REJECT_MASTER_II"}}
+                                <span class="label label-danger">reject</span>
+                                {{end}}
                             </td>
                             <td>{{$value.Remark}}</td>
                             <td>{{$value.CreateBy.Name}}</td>

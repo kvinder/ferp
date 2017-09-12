@@ -7,7 +7,7 @@
             <i class="ace-icon fa fa-home home-icon"></i>
             <a href="/">Home</a>
         </li>
-        <li class="active">ims waitting approve master ii</li>
+        <li class="active">ims upload data</li>
     </ul>
     <!-- /.breadcrumb -->
 
@@ -25,23 +25,16 @@
 <div class="page-content">
     <div class="page-header">
         <h1>
-            Master Inspection Waitting Approve
+            Upload Data Inspection 
         </h1>
     </div>
     <!-- /.page-header -->
     <div class="row">
         <div class="col-xs-12">
-            <form class="form-horizontal" action="/ims/approverejectmasterii" id="formII" method="POST" enctype="multipart/form-data" role="form">
+            <form class="form-horizontal" id="formII" method="POST" enctype="multipart/form-data" role="form">
                 <div class="row">
                     <div class="col-sm-10">
-                        <input type="text" class="hidden" name="id" value="{{.detail.ID}}">
-                        <div class="form-group">
-                            <label for="inputCustomer" class="col-sm-3 control-label">MI Number :</label>
-                            <div class="col-sm-9">
-                                <label class="form-control-static">{{.detail.MINumber}}</label>
-                            </div>
-                        </div>
-
+                        <input type="text" name="idMasterII" class="hidden" value="{{.detail.ID}}">
                         <div class="form-group">
                             <label for="inputCustomer" class="col-sm-3 control-label">Customer :</label>
                             <div class="col-sm-9">
@@ -129,111 +122,54 @@
                             </div>
                         </div>
                         {{end}}
+
+                        <div class="form-group">
+                            <label for="inputWorkOrder" class="col-sm-3 control-label">Work Order : </label>
+                            <div class="col-sm-9">
+                                <input class="form-control input-group-sm" name="inputWorkOrder" id="inputWorkOrder" placeholder="Work Order" autocomplete="off" required="" type="text">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label" for="form-field-type">Type : </label>
+                            <div class="col-sm-9">
+                                <select class="form-control" name="field-type" id="form-field-type">
+                                    <option>First Shot</option>
+                                    <option>Random</option>
+                                    <option>Final</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="inputQty" class="col-sm-3 control-label">Qty Inspection : </label>
+                            <div class="col-sm-9">
+                                <input class="form-control input-group-sm" name="inputQty" id="inputQty" placeholder="qty" autocomplete="off" required="" type="number">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="id-input-file" class="col-sm-3 control-label">Upload File :</label>
+                            <div class="col-sm-9">
+                                <input type="file" name="id-input-file" id="id-input-file" required />
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="id-remark" class="col-sm-3 control-label">Remark :</label>
+                            <div class="col-sm-9">
+                                <textarea class="form-control" rows="4" name="id-remark" id="id-remark"></textarea>
+                            </div>
+                        </div>
+
                         <div class="form-group">
                             <div class="col-sm-offset-3 col-sm-9">
-                                <button type="button" id="btnApprove" class="btn btn-success">Approve</button>
-                                &nbsp; &nbsp; &nbsp;
-                                <button type="button" id="btnReject" class="btn btn-danger">Reject</button>
-                            </div>
-                        </div>
-                        <input type="text" class="hidden" name="approveOrReject" id="approveOrReject">
-                    </div>
-                </div>
-
-                <div class="modal fade" id="alertApproveModal" role="dialog">
-                    <div class="modal-dialog">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <button type="button" class="close" data-dismiss="modal"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button>
-                                <h4 class="modal-title">Approve</h4>
-                            </div>
-                            <div class="modal-body">
-                                Confirm approve
-                            </div>
-                            <div class="modal-footer">
-                                <button type="submit" class="btn btn-success" id="btnApproveReason">confirm</button>
+                                <button type="submit" id="submit" class="btn btn-primary">Submit</button>
                             </div>
                         </div>
                     </div>
                 </div>
-
-                <div class="modal fade" id="alertRejectModal" role="dialog">
-                    <div class="modal-dialog">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <button type="button" class="close" data-dismiss="modal"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button>
-                                <h4 class="modal-title">Reject Reason</h4>
-                            </div>
-                            <div class="modal-body">
-                                <textarea class="form-control" rows="3" name="inputReasonReject" id="inputReasonReject"></textarea>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="submit" class="btn btn-danger" id="btnRejectModal">reject</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
             </form>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-xs-12">
-            <div class="panel-body table-responsive">
-                <table id="simple-table" class="table  table-bordered table-hover">
-                    <caption>History</caption>
-                    <thead>
-                    <tr>
-                        <th>Update Date</th>
-                        <th>Status</th>
-                        <th>Remark</th>
-                        <th>Update By</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                        {{ range $value := .detail.HistoryMI }}
-                        <tr>
-                            <td>{{$value.CreateDate}}</td>
-                            <td>
-                                {{if eq $value.Status "CREATE_MASTER_II"}}
-                                <span class="label label-info">create</span>
-                                {{end}}
-                                {{if eq $value.Status "UPDATE_MASTER_II"}}
-                                <span class="label label-default">update</span>
-                                {{end}}
-                                {{if eq $value.Status "DELETE_MASTER_II"}}
-                                <span class="label label-danger">delete</span>
-                                {{end}}
-                                {{if eq $value.Status "APPROVE_MASTER_II"}}
-                                <span class="label label-success">approve</span>
-                                {{end}}
-                                {{if eq $value.Status "REJECT_MASTER_II"}}
-                                <span class="label label-danger">reject</span>
-                                {{end}}
-                            </td>
-                            <td>{{$value.Remark}}</td>
-                            <td>{{$value.CreateBy.Name}}</td>
-                        </tr>
-                        {{end}}
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </div>
-</div>
-<div class="modal fade" id="alertApproveModal" role="dialog">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button>
-                <h4 class="modal-title">Approve</h4>
-            </div>
-            <div class="modal-body">
-                Confirm approve
-            </div>
-            <div class="modal-footer">
-                <button type="submit" class="btn btn-success" id="btnApproveReason">confirm</button>
-            </div>
         </div>
     </div>
 </div>
@@ -247,14 +183,13 @@
             }
         });
 
-        $("#btnApprove").click(function() {
-            $("#approveOrReject").val("APPROVE_MASTER_II");
-            $("#alertApproveModal").modal({show:true});
-        });
-
-        $("#btnReject").click(function() {
-            $("#approveOrReject").val("REJECT_MASTER_II")
-            $("#alertRejectModal").modal({show:true});
+        $('#id-input-file').ace_file_input({
+            no_file:'No File ...',
+            btn_choose:'Choose',
+            btn_change:'Change',
+            droppable:false,
+            onchange:null,
+            thumbnail:false 
         });
     });
 </script>

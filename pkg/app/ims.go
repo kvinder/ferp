@@ -236,6 +236,77 @@ func imsRejectMasterIIList(w http.ResponseWriter, r *http.Request) {
 	view.ImsRejectMasterIIList(w, data)
 }
 
+func imsUploadIIDataSearch(w http.ResponseWriter, r *http.Request) {
+	data := map[string]interface{}{
+		"ims":                "active open",
+		"ims_upload_ii_data": "active",
+	}
+	userOnLogin, err := model.UserOnLogin(r)
+	if err == nil {
+		data["nameLogin"] = userOnLogin.Name
+		data = setAut(data, userOnLogin.Roles)
+	}
+	checkAuthorization([]string{"Admin", "QA_OFFICE", "QA_Engineer", "QA_FA", "QA_LINE"}, userOnLogin, w, r)
+	data["masterIIApproveList"] = model.GetAllMasterIIByStatusIn("APPROVE_MASTER_II")
+	view.ImsCreateUploadIIDataSearch(w, data)
+}
+
+func imsUploadData(w http.ResponseWriter, r *http.Request) {
+	data := map[string]interface{}{
+		"ims": "active open",
+	}
+	userOnLogin, err := model.UserOnLogin(r)
+	if err == nil {
+		data["nameLogin"] = userOnLogin.Name
+		data = setAut(data, userOnLogin.Roles)
+	}
+	checkAuthorization([]string{"Admin", "QA_OFFICE", "QA_Engineer", "QA_FA", "QA_OFFICE", "QA_LINE"}, userOnLogin, w, r)
+	if r.Method == http.MethodPost {
+		fileData, err := model.UploadFile(r, "id-input-file")
+		checkErr(err)
+		t := time.Now()
+		now := t.Format("2006-01-02 15:04:05")
+		idMasterStr := r.FormValue("idMasterII")
+		idMasterII, _ := strconv.Atoi(idMasterStr)
+		qtyInspec, _ := strconv.Atoi(r.FormValue("inputQty"))
+		inspectionData := model.InspectionData{
+			CreateDate:         now,
+			UpdateDate:         now,
+			CreateBy:           userOnLogin,
+			UpdateBy:           userOnLogin,
+			FileInspectionData: fileData,
+			MasterII:           model.GetMasterII(idMasterII),
+			Status:             "UPLOAD_INSPECTION_DATA",
+			WorkOrder:          r.FormValue("inputWorkOrder"),
+			TypeInspection:     r.FormValue("field-type"),
+			QtyInspection:      qtyInspec,
+			Remark:             r.FormValue("id-remark"),
+		}
+		idRes := model.CreateInspectionData(inspectionData)
+		http.Redirect(w, r, "/ims/datainspection?detail="+strconv.Itoa(idRes), http.StatusSeeOther)
+		return
+	}
+	masterid := r.URL.Query().Get("masterid")
+	i, _ := strconv.Atoi(masterid)
+	data["detail"] = model.GetMasterII(i)
+	view.ImsUploadData(w, data)
+}
+
+func imsUploadDataDetail(w http.ResponseWriter, r *http.Request) {
+	data := map[string]interface{}{
+		"ims": "active open",
+	}
+	userOnLogin, err := model.UserOnLogin(r)
+	if err == nil {
+		data["nameLogin"] = userOnLogin.Name
+		data = setAut(data, userOnLogin.Roles)
+	}
+	detailid := r.URL.Query().Get("detail")
+	i, _ := strconv.Atoi(detailid)
+	data["detail"] = model.GetInspectionData(i)
+	view.ImsUploadDataDetail(w, data)
+}
+
 func checkErr(err error) {
 	if err != nil {
 		panic(err)

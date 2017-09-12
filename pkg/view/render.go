@@ -82,6 +82,21 @@ func ImsWaittingApproveMasterII(w http.ResponseWriter, data interface{}) {
 	render(parseTemplate("ims/waittingApproveMasterII.html"), w, data)
 }
 
+// ImsCreateUploadIIDataSearch render view
+func ImsCreateUploadIIDataSearch(w http.ResponseWriter, data interface{}) {
+	render(parseTemplate("ims/uploadIIDataSearch.html"), w, data)
+}
+
+// ImsUploadData render view
+func ImsUploadData(w http.ResponseWriter, data interface{}) {
+	render(parseTemplate("ims/uploadIIData.html"), w, data)
+}
+
+// ImsUploadDataDetail render view
+func ImsUploadDataDetail(w http.ResponseWriter, data interface{}) {
+	render(parseTemplate("ims/uploadIIDataDetail.html"), w, data)
+}
+
 // CustomerDashboard render view
 func CustomerDashboard(w http.ResponseWriter, data interface{}) {
 	render(parseTemplate("customer/dashboard.html"), w, data)
