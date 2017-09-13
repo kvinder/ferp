@@ -1,6 +1,7 @@
 package app
 
 import (
+	"encoding/json"
 	"ferp/pkg/model"
 	"ferp/pkg/view"
 	"net/http"
@@ -18,6 +19,13 @@ func imsDashboard(w http.ResponseWriter, r *http.Request) {
 		data["nameLogin"] = userOnLogin.Name
 		data = setAut(data, userOnLogin.Roles)
 	}
+	t := time.Now()
+	year, month, day := t.Date()
+	startDateTime := time.Date(year, month, day, 0, 0, 0, 0, t.Location())
+	endDateTime := time.Date(year, month, day, 23, 59, 59, 0, t.Location())
+	startDateStr := startDateTime.Format("2006-01-02 15:04:05")
+	endDateStr := endDateTime.Format("2006-01-02 15:04:05")
+	data["inspectionDataList"] = model.GetAllInspectionDataBetweenDate(startDateStr, endDateStr)
 	view.ImsDashboard(w, data)
 }
 
@@ -260,7 +268,7 @@ func imsUploadData(w http.ResponseWriter, r *http.Request) {
 		data["nameLogin"] = userOnLogin.Name
 		data = setAut(data, userOnLogin.Roles)
 	}
-	checkAuthorization([]string{"Admin", "QA_OFFICE", "QA_Engineer", "QA_FA", "QA_OFFICE", "QA_LINE"}, userOnLogin, w, r)
+	checkAuthorization([]string{"Admin", "QA_OFFICE", "QA_Engineer", "QA_FA", "QA_LINE"}, userOnLogin, w, r)
 	if r.Method == http.MethodPost {
 		fileData, err := model.UploadFile(r, "id-input-file")
 		checkErr(err)
@@ -305,6 +313,92 @@ func imsUploadDataDetail(w http.ResponseWriter, r *http.Request) {
 	i, _ := strconv.Atoi(detailid)
 	data["detail"] = model.GetInspectionData(i)
 	view.ImsUploadDataDetail(w, data)
+}
+
+func imsCheckUploadData(w http.ResponseWriter, r *http.Request) {
+	data := map[string]interface{}{
+		"ims": "active open",
+	}
+	userOnLogin, err := model.UserOnLogin(r)
+	if err == nil {
+		data["nameLogin"] = userOnLogin.Name
+		data = setAut(data, userOnLogin.Roles)
+	}
+	checkAuthorization([]string{"Admin", "QA_Engineer", "QA_FA", "QA_OFFICE"}, userOnLogin, w, r)
+	if r.Method == http.MethodPost {
+		id := r.FormValue("id")
+		i, _ := strconv.Atoi(id)
+		inspectionData := model.GetInspectionData(i)
+		t := time.Now()
+		now := t.Format("2006-01-02 15:04:05")
+		inspectionData.Remark = r.FormValue("inputConfirm")
+		inspectionData.UpdateBy = userOnLogin
+		inspectionData.UpdateDate = now
+		if inspectionData.Status != "UPLOAD_INSPECTION_DATA" {
+			http.Redirect(w, r, "/", http.StatusSeeOther)
+			return
+		}
+		inspectionData.Status = r.FormValue("checked-input")
+		model.UpdateInspectionData(inspectionData)
+		http.Redirect(w, r, "/ims/waitleaderchecklist", http.StatusSeeOther)
+		return
+	}
+	detailid := r.URL.Query().Get("check")
+	i, _ := strconv.Atoi(detailid)
+	data["detail"] = model.GetInspectionData(i)
+	view.ImsCheckUploadData(w, data)
+}
+
+func imsSearchReportList(w http.ResponseWriter, r *http.Request) {
+	data := map[string]interface{}{
+		"ims":               "active open",
+		"ims_search_report": "active",
+	}
+	userOnLogin, err := model.UserOnLogin(r)
+	if err == nil {
+		data["nameLogin"] = userOnLogin.Name
+		data = setAut(data, userOnLogin.Roles)
+	}
+	data["inspectionDataList"] = model.GetAllInspectionData()
+	view.ImsSearchReport(w, data)
+}
+
+func findWorkOrdersJSON(w http.ResponseWriter, r *http.Request) {
+	if r.Method == http.MethodPost {
+		userOnLogin, err := model.UserOnLogin(r)
+		if err != nil {
+			http.Error(w, "Method Not Allowed", http.StatusMethodNotAllowed)
+			return
+		}
+		checkAuthorization([]string{"Admin", "QA_OFFICE", "QA_Engineer", "QA_FA", "QA_LINE"}, userOnLogin, w, r)
+		body := bodyToJSON(r)
+		workOrders := model.GetWorkOrderLike(body["workOrder"])
+		var workOrderArray []string
+		for _, workOrder := range workOrders {
+			workOrderArray = append(workOrderArray, workOrder)
+		}
+		mapData := make(map[string][]string)
+		mapData["workOrders"] = workOrderArray
+		w.Header().Set("Content-Type", "application/json")
+		json.NewEncoder(w).Encode(mapData)
+		return
+	}
+	http.Error(w, "Method Not Allowed", http.StatusMethodNotAllowed)
+	return
+}
+
+func imsWaittingLeaderCheckDataList(w http.ResponseWriter, r *http.Request) {
+	data := map[string]interface{}{
+		"ims": "active open",
+		"ims_waitting_leader_check_data": "active",
+	}
+	userOnLogin, err := model.UserOnLogin(r)
+	if err == nil {
+		data["nameLogin"] = userOnLogin.Name
+		data = setAut(data, userOnLogin.Roles)
+	}
+	data["inspectionDataList"] = model.GetAllInspectionDataByStatus("UPLOAD_INSPECTION_DATA")
+	view.ImsWaitLeaderCheckDataList(w, data)
 }
 
 func checkErr(err error) {

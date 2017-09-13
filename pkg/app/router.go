@@ -24,6 +24,8 @@ func Router(mux *http.ServeMux) {
 	midelwareMux.HandleFunc("/ims/approveiilist", imsApproveMasterIIList)
 	midelwareMux.HandleFunc("/ims/rejectiilist", imsRejectMasterIIList)
 	midelwareMux.HandleFunc("/ims/datainspection", imsUploadDataDetail)
+	midelwareMux.HandleFunc("/ims/waitleaderchecklist", imsWaittingLeaderCheckDataList)
+	midelwareMux.HandleFunc("/ims/searchreport", imsSearchReportList)
 
 	//Admin
 	midelwareMux.HandleFunc("/admin/create", adminCreate)
@@ -41,6 +43,9 @@ func Router(mux *http.ServeMux) {
 	midelwareMux.HandleFunc("/ims/approverejectmasterii", imsMasterIIApproveOrReject)
 	midelwareMux.HandleFunc("/ims/uploadiidatasearch", imsUploadIIDataSearch)
 	midelwareMux.HandleFunc("/ims/uploaddataii", imsUploadData)
+	midelwareMux.HandleFunc("/ims/checkdatainspection", imsCheckUploadData)
+	//ims JSON
+	midelwareMux.HandleFunc("/ims/findworkorder", findWorkOrdersJSON)
 
 	//fileUpload
 	midelwareMux.HandleFunc("/file", downloadFile)
@@ -67,6 +72,8 @@ var pathNoNeedLogin = map[string]bool{
 	"/customer/dashboard":        true,
 	"/ims/dashboard":             true,
 	"/ims/datainspection":        true,
+	"/ims/waitleaderchecklist":   true,
+	"/ims/searchreport":          true,
 	"/admin/create":              false,
 	"/admin/list":                false,
 	"/admin/user":                false,
@@ -77,6 +84,8 @@ var pathNoNeedLogin = map[string]bool{
 	"/ims/approverejectmasterii": false,
 	"/ims/uploadiidatasearch":    false,
 	"/ims/uploaddataii":          false,
+	"/ims/findworkorder":         false,
+	"/ims/checkdatainspection":   false,
 	"/customer/create":           false,
 	"/customer/findcustomer":     false,
 }
