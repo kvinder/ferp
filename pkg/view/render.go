@@ -97,6 +97,21 @@ func ImsUploadDataDetail(w http.ResponseWriter, data interface{}) {
 	render(parseTemplate("ims/uploadIIDataDetail.html"), w, data)
 }
 
+// ImsCheckUploadData render view
+func ImsCheckUploadData(w http.ResponseWriter, data interface{}) {
+	render(parseTemplate("ims/checkUploadData.html"), w, data)
+}
+
+// ImsWaitLeaderCheckDataList render view
+func ImsWaitLeaderCheckDataList(w http.ResponseWriter, data interface{}) {
+	render(parseTemplate("ims/waittingLeaderCheckList.html"), w, data)
+}
+
+// ImsSearchReport render view
+func ImsSearchReport(w http.ResponseWriter, data interface{}) {
+	render(parseTemplate("ims/searchReport.html"), w, data)
+}
+
 // CustomerDashboard render view
 func CustomerDashboard(w http.ResponseWriter, data interface{}) {
 	render(parseTemplate("customer/dashboard.html"), w, data)

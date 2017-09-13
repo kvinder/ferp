@@ -152,13 +152,15 @@
                             </div>
                         </div>
 
+                        {{ $length := len .detail.Remark }}
+                        {{ if ne $length 0 }}
                         <div class="form-group">
                             <label for="id-remark" class="col-sm-3 control-label">Remark :</label>
                             <div class="col-sm-9">
                                 <textarea class="form-control" rows="4" name="id-remark" id="id-remark" disabled>{{.detail.Remark}}</textarea>
                             </div>
                         </div>
-
+                        {{end}}
                     </div>
                 </div>
             </form>
@@ -185,6 +187,9 @@
                             <td>
                                 {{if eq $value.Status "UPLOAD_INSPECTION_DATA"}}
                                 <span class="label label-info">upload</span>
+                                {{end}}
+                                {{if eq $value.Status "CHECKED_UPLOAD_FILE"}}
+                                <span class="label label-success">checked</span>
                                 {{end}}
                             </td>
                             <td>{{$value.Remark}}</td>

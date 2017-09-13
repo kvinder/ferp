@@ -1,5 +1,4 @@
 {{define "root-style"}}
-<link rel="stylesheet" href="/-/jquery-ui-1.12.1/jquery-ui.min.css">
 {{end}} {{define "root-body"}}
 <div class="breadcrumbs ace-save-state" id="breadcrumbs">
     <ul class="breadcrumb">
@@ -7,7 +6,7 @@
             <i class="ace-icon fa fa-home home-icon"></i>
             <a href="/">Home</a>
         </li>
-        <li class="active">ims upload data</li>
+        <li class="active">ims check data inspection</li>
     </ul>
     <!-- /.breadcrumb -->
 
@@ -25,7 +24,7 @@
 <div class="page-content">
     <div class="page-header">
         <h1>
-            Upload Data Inspection 
+            Check Data Inspection
         </h1>
     </div>
     <!-- /.page-header -->
@@ -34,36 +33,36 @@
             <form class="form-horizontal" id="formII" method="POST" enctype="multipart/form-data" role="form">
                 <div class="row">
                     <div class="col-sm-10">
-                        <input type="text" name="idMasterII" class="hidden" value="{{.detail.ID}}">
+                        <input class="hidden" name="id" type="text" value="{{.detail.ID}}">
                         <div class="form-group">
                             <label for="inputCustomer" class="col-sm-3 control-label">Customer :</label>
                             <div class="col-sm-9">
-                                <label class="form-control-static">{{.detail.CustomerMaterII.Name}}</label>
+                                <label class="form-control-static">{{.detail.MasterII.CustomerMaterII.Name}}</label>
                             </div>
                         </div>
 
                         <div class="form-group">
                             <label for="inputPartNo" class="col-sm-3 control-label">Part No. :</label>
                             <div class="col-sm-9">
-                                <label class="form-control-static">{{.detail.PartNumber}}</label>                                    
+                                <label class="form-control-static">{{.detail.MasterII.PartNumber}}</label>                                    
                             </div>
                         </div>
 
                         <div class="form-group">
                             <label for="inputPartName" class="col-sm-3 control-label">Part Name. :</label>
                             <div class="col-sm-9">
-                                <label class="form-control-static">{{.detail.PartName}}</label>
+                                <label class="form-control-static">{{.detail.MasterII.PartName}}</label>
                             </div>
                         </div>
 
                         <div class="form-group">
                             <label for="inputRevision" class="col-sm-3 control-label">Revision :</label>
                             <div class="col-sm-9">
-                                <label class="form-control-static">{{.detail.Revision}}</label>
+                                <label class="form-control-static">{{.detail.MasterII.Revision}}</label>
                             </div>
                         </div>
-                        
-                        {{ $drawing := .detail.Drawing }}
+
+                        {{ $drawing := .detail.MasterII.Drawing }}
                         {{if ne $drawing.ID 0}} 
                         <div class="form-group">
                             <label for="id-input-file-1" class="col-sm-3 control-label">Drawing :</label>
@@ -75,7 +74,7 @@
                         </div>
                         {{end}}
 
-                        {{ $inspection := .detail.Inspection }}
+                        {{ $inspection := .detail.MasterII.Inspection }}
                         {{if ne $inspection.ID 0}} 
                         <div class="form-group">
                             <label for="id-input-file-1" class="col-sm-3 control-label">Inspection :</label>
@@ -87,10 +86,10 @@
                         </div>
                         {{end}}
 
-                        {{ $file3 := .detail.File3 }}
+                        {{ $file3 := .detail.MasterII.File3 }}
                         {{if ne $file3.ID 0}} 
                         <div class="form-group">
-                            <label for="id-input-file-1" class="col-sm-3 control-label">{{.detail.TextFile3}} :</label>
+                            <label for="id-input-file-1" class="col-sm-3 control-label">{{.detail.MasterII.TextFile3}} :</label>
                             <div class="col-sm-9">
                                 <div class="alert alert-success" role="alert">
                                     <a href="/file?file={{$file3.ID}}" target="_blank" class="alert-link">{{$file3.FileName}} <span class="glyphicon glyphicon-download-alt" aria-hidden="true"></span></a>
@@ -99,10 +98,10 @@
                         </div>
                         {{end}}
 
-                        {{ $file4 := .detail.File4 }}
+                        {{ $file4 := .detail.MasterII.File4 }}
                         {{if ne $file4.ID 0}} 
                         <div class="form-group">
-                            <label for="id-input-file-1" class="col-sm-3 control-label">{{.detail.TextFile4}} :</label>
+                            <label for="id-input-file-1" class="col-sm-3 control-label">{{.detail.MasterII.TextFile4}} :</label>
                             <div class="col-sm-9">
                                 <div class="alert alert-success" role="alert">
                                     <a href="/file?file={{$file4.ID}}" target="_blank" class="alert-link">{{$file4.FileName}} <span class="glyphicon glyphicon-download-alt" aria-hidden="true"></span></a>
@@ -111,10 +110,10 @@
                         </div>
                         {{end}}
 
-                        {{ $file5 := .detail.File5 }}
+                        {{ $file5 := .detail.MasterII.File5 }}
                         {{if ne $file5.ID 0}} 
                         <div class="form-group">
-                            <label for="id-input-file-1" class="col-sm-3 control-label">{{.detail.TextFile5}} :</label>
+                            <label for="id-input-file-1" class="col-sm-3 control-label">{{.detail.MasterII.TextFile5}} :</label>
                             <div class="col-sm-9">
                                 <div class="alert alert-success" role="alert">
                                     <a href="/file?file={{$file5.ID}}" target="_blank" class="alert-link">{{$file5.FileName}} <span class="glyphicon glyphicon-download-alt" aria-hidden="true"></span></a>
@@ -124,47 +123,64 @@
                         {{end}}
 
                         <div class="form-group">
-                            <label for="inputWorkOrder" class="col-sm-3 control-label">Work Order : </label>
+                            <label class="col-sm-3 control-label">Work Order :</label>
                             <div class="col-sm-9">
-                                <input class="form-control input-group-sm" name="inputWorkOrder" id="inputWorkOrder" placeholder="Work Order" autocomplete="off" required="" type="text">
+                                <label class="form-control-static">{{.detail.WorkOrder}}</label>
                             </div>
                         </div>
 
                         <div class="form-group">
-                            <label class="col-sm-3 control-label" for="form-field-type">Type : </label>
+                            <label class="col-sm-3 control-label">Type :</label>
                             <div class="col-sm-9">
-                                <select class="form-control" name="field-type" id="form-field-type">
-                                    <option>First Shot</option>
-                                    <option>Random</option>
-                                    <option>Final</option>
-                                </select>
+                                <label class="form-control-static">{{.detail.TypeInspection}}</label>
                             </div>
                         </div>
 
                         <div class="form-group">
-                            <label for="inputQty" class="col-sm-3 control-label">Qty Inspection : </label>
+                            <label class="col-sm-3 control-label">Qty Inspection :</label>
                             <div class="col-sm-9">
-                                <input class="form-control input-group-sm" name="inputQty" id="inputQty" placeholder="qty" autocomplete="off" required="" type="number">
+                                <label class="form-control-static">{{.detail.QtyInspection}} pcs</label>
                             </div>
                         </div>
 
                         <div class="form-group">
-                            <label for="id-input-file" class="col-sm-3 control-label">Upload File :</label>
+                            <label for="id-input-file-1" class="col-sm-3 control-label">Inspection Data :</label>
                             <div class="col-sm-9">
-                                <input type="file" name="id-input-file" id="id-input-file" required />
+                                <div class="alert alert-success" role="alert">
+                                    <a href="/file?file={{.detail.FileInspectionData.ID}}" target="_blank" class="alert-link">{{.detail.FileInspectionData.FileName}} <span class="glyphicon glyphicon-download-alt" aria-hidden="true"></span></a>
+                                </div>
                             </div>
                         </div>
 
+                        {{ $length := len .detail.Remark }}
+                        {{ if ne $length 0 }}
                         <div class="form-group">
                             <label for="id-remark" class="col-sm-3 control-label">Remark :</label>
                             <div class="col-sm-9">
-                                <textarea class="form-control" rows="4" name="id-remark" id="id-remark"></textarea>
+                                <textarea class="form-control" rows="4" name="id-remark" id="id-remark" disabled>{{.detail.Remark}}</textarea>
                             </div>
                         </div>
-
+                        {{end}}
                         <div class="form-group">
                             <div class="col-sm-offset-3 col-sm-9">
-                                <button type="submit" id="submit" class="btn btn-primary">Submit</button>
+                                <button type="button" id="btnChecked" class="btn btn-success">Checked</button>
+                            </div>
+                        </div>
+                        <input type="text" class="hidden" name="checked-input" id="checked-input">
+                    </div>
+                </div>
+                <div class="modal fade" id="alertCheckedModal" role="dialog">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button>
+                                <h4 class="modal-title">Remark</h4>
+                            </div>
+                            <div class="modal-body">
+                                <textarea class="form-control" rows="3" name="inputConfirm" id="inputConfirm"></textarea>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="submit" class="btn btn-success" id="btnConfirm">confirm</button>
                             </div>
                         </div>
                     </div>
@@ -172,9 +188,40 @@
             </form>
         </div>
     </div>
+    
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="panel-body table-responsive">
+                <table id="simple-table" class="table  table-bordered table-hover">
+                    <caption>History</caption>
+                    <thead>
+                    <tr>
+                        <th>Update Date</th>
+                        <th>Status</th>
+                        <th>Remark</th>
+                        <th>Update By</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                        {{ range $value := .detail.HistoryIN }}
+                        <tr>
+                            <td>{{$value.CreateDate}}</td>
+                            <td>
+                                {{if eq $value.Status "UPLOAD_INSPECTION_DATA"}}
+                                <span class="label label-info">upload</span>
+                                {{end}}
+                            </td>
+                            <td>{{$value.Remark}}</td>
+                            <td>{{$value.CreateBy.Name}}</td>
+                        </tr>
+                        {{end}}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
 </div>
 {{end}}{{define "root-script"}}
-<script src="/-/jquery-ui-1.12.1/jquery-ui.min.js"></script>
 <script>
     $(document).ready(function() {
         $("#searchGoogle").keypress(function(e) {
@@ -184,47 +231,9 @@
             }
         });
 
-        $('#id-input-file').ace_file_input({
-            no_file:'No File ...',
-            btn_choose:'Choose',
-            btn_change:'Change',
-            droppable:false,
-            onchange:null,
-            thumbnail:false 
-        });
-
-        $("#inputWorkOrder").on('change keyup paste',function() {
-            var inputWorkOrder = $("#inputWorkOrder").val();
-            var formData = {
-                "workOrder": inputWorkOrder
-            }
-            var workOrders = [];
-            $.ajax({
-                type: "POST",
-                url: "/ims/findworkorder",
-                processData: false,
-                async: true,
-                data: JSON.stringify(formData),
-                success: function(data){
-                    if(data["workOrders"] != null) {
-                        $.each(data["workOrders"], function(i, item) {
-                            workOrders.push(item);
-                        });
-                        $("#inputWorkOrder").autocomplete({
-                            source: workOrders
-                        });
-                    } else {
-                        workOrders = [];
-                        $("#inputWorkOrder").autocomplete({
-                            source: workOrders
-                        });
-                    }
-                },
-                error: function(data){
-                    alert("server not found");
-                    return false;
-                }
-            });
+        $("#btnChecked").click(function() {
+            $("#checked-input").val("CHECKED_UPLOAD_FILE");
+            $("#alertCheckedModal").modal({show:true});
         });
     });
 </script>
