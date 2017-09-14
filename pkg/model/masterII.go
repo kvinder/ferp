@@ -32,6 +32,8 @@ type MasterInspection struct {
 
 //CreateMasterInspection create
 func CreateMasterInspection(masterII MasterInspection) int {
+	db := getConnection()
+	defer db.Close()
 	sqlQuery := `INSERT INTO MASTERINSPECTION (customer,partNumber,partName,revision,drawing,inspection,
 	file3,file4,file5,textFile3,textFile4,textFile5,status,createDate,updateDate,createBy,updateBy)
 	VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`
@@ -82,6 +84,8 @@ func CreateMasterInspection(masterII MasterInspection) int {
 
 //UpdateMasterInspection create
 func UpdateMasterInspection(masterII MasterInspection) int {
+	db := getConnection()
+	defer db.Close()
 	sqlQuery := `UPDATE MASTERINSPECTION SET customer=?,partNumber=?,partName=?,revision=?,
 	drawing=?,inspection=?,file3=?,file4=?,file5=?,textFile3=?,textFile4=?,textFile5=?,
 	status=?,updateDate=?,updateBy=? WHERE id = ?`
@@ -106,7 +110,7 @@ func UpdateMasterInspection(masterII MasterInspection) int {
 	checkErr(err)
 	remarkHistory := ""
 	if masterII.Status == "UPDATE_MASTER_II" {
-		remarkHistory = "update master inspection"
+		remarkHistory = masterII.Remark
 	}
 	if masterII.Status == "DELETE_MASTER_II" {
 		remarkHistory = "delete master inspection"
@@ -138,6 +142,8 @@ func UpdateMasterInspection(masterII MasterInspection) int {
 
 //GetMasterII getting
 func GetMasterII(id int) MasterInspection {
+	db := getConnection()
+	defer db.Close()
 	sqlQuery := `SELECT id,MINumber,customer,partNumber,partName,revision,drawing,inspection,
 	file3,file4,file5,textFile3,textFile4,textFile5,status,createDate,updateDate,createBy,updateBy
 	FROM MASTERINSPECTION WHERE id = ?`
@@ -194,6 +200,8 @@ func GetMasterII(id int) MasterInspection {
 
 //GetAllMasterIIByStatusIn getting
 func GetAllMasterIIByStatusIn(status ...string) []MasterInspection {
+	db := getConnection()
+	defer db.Close()
 	stuff := make([]interface{}, len(status))
 	for i, value := range status {
 		stuff[i] = value

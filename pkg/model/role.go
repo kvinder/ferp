@@ -9,6 +9,8 @@ type Role struct {
 
 //ListRoles database
 func ListRoles() []Role {
+	db := getConnection()
+	defer db.Close()
 	rows, err := db.Query("SELECT ID, role_name, role_description FROM APP_ROLE")
 	checkErr(err)
 	var allRole []Role

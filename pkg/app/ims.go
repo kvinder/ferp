@@ -131,6 +131,7 @@ func imsUpdateMasterII(w http.ResponseWriter, r *http.Request) {
 		currentMasterII.TextFile4 = r.FormValue("inputFile2")
 		currentMasterII.TextFile5 = r.FormValue("inputFile3")
 		currentMasterII.Status = r.FormValue("statusInput")
+		currentMasterII.Remark = r.FormValue("inputConfirmUpdate")
 		currentMasterII.UpdateDate = now
 		currentMasterII.UpdateBy = userOnLogin
 		idRes := model.UpdateMasterInspection(currentMasterII)
@@ -286,6 +287,7 @@ func imsUploadData(w http.ResponseWriter, r *http.Request) {
 			MasterII:           model.GetMasterII(idMasterII),
 			Status:             "UPLOAD_INSPECTION_DATA",
 			WorkOrder:          r.FormValue("inputWorkOrder"),
+			Process:            r.FormValue("field-process"),
 			TypeInspection:     r.FormValue("field-type"),
 			QtyInspection:      qtyInspec,
 			Remark:             r.FormValue("id-remark"),
@@ -358,6 +360,13 @@ func imsSearchReportList(w http.ResponseWriter, r *http.Request) {
 	if err == nil {
 		data["nameLogin"] = userOnLogin.Name
 		data = setAut(data, userOnLogin.Roles)
+	}
+	if r.Method == http.MethodPost {
+		startDateStr := r.FormValue("inputStartDate") + " 00:00:00"
+		endDateStr := r.FormValue("inputEndDate") + " 23:59:59"
+		data["inspectionDataList"] = model.GetAllInspectionDataBetweenDate(startDateStr, endDateStr)
+		view.ImsSearchReport(w, data)
+		return
 	}
 	data["inspectionDataList"] = model.GetAllInspectionData()
 	view.ImsSearchReport(w, data)

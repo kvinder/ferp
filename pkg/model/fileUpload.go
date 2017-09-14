@@ -18,6 +18,8 @@ type FileUpload struct {
 
 //UploadFile database
 func UploadFile(r *http.Request, fileForm string) (fileupload FileUpload, err error) {
+	db := getConnection()
+	defer db.Close()
 	drawingFile, typeHeader, err := r.FormFile(fileForm)
 	file := FileUpload{}
 	if drawingFile == nil || typeHeader == nil {
@@ -54,6 +56,8 @@ func UploadFile(r *http.Request, fileForm string) (fileupload FileUpload, err er
 
 //GetFileUploadByID getting
 func GetFileUploadByID(fileUploadID int) FileUpload {
+	db := getConnection()
+	defer db.Close()
 	sqlQuery := `SELECT id,filename,ContentType,createDate
 	FROM FileUpload WHERE id = ?`
 	rowsFileUpload, err := db.Query(sqlQuery, fileUploadID)

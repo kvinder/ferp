@@ -9,16 +9,21 @@ import (
 	_ "github.com/mattn/go-sqlite3"
 )
 
-var db *sql.DB
+var databaseName, databaseURL string
 
 //InitConnection database
-func InitConnection(databaseName, databaseURL string) {
+func InitConnection(dbName, dbURL string) {
+	databaseName = dbName
+	databaseURL = dbURL
+	fmt.Println("Database connect...")
+}
+
+func getConnection() *sql.DB {
 	dbConnect, err := sql.Open(databaseName, databaseURL)
 	if err != nil {
 		log.Fatalf("can not connect database : %v", err)
 	}
-	db = dbConnect
-	fmt.Println("Database connect...")
+	return dbConnect
 }
 
 //CreateDatabase sql
@@ -101,6 +106,7 @@ func CreateDatabase() {
 		MasterII INTEGER DEFAULT NULL,
 		FileInspectionData INTEGER DEFAULT NULL,
 		workOrder varchar(255) DEFAULT NULL,
+		process varchar(255) DEFAULT NULL,
 		typeInspection varchar(255) DEFAULT NULL,
 		qtyInspection INTEGER DEFAULT NULL,
 		Status varchar(255) DEFAULT NULL,
@@ -128,15 +134,11 @@ func CreateDatabase() {
 		textFile5 varchar(255) DEFAULT NULL,
 		FileInspectionData INTEGER DEFAULT NULL);
 	  `
+	db := getConnection()
+	defer db.Close()
 	_, err := db.Exec(sqlCreateTable)
 	checkErr(err)
 	fmt.Println("Create Table...")
-}
-
-//CloseConnection database
-func CloseConnection() {
-	db.Close()
-	fmt.Println("Database close.")
 }
 
 func checkErr(err error) {

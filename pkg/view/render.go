@@ -4,42 +4,42 @@ import "net/http"
 
 // Index render view
 func Index(w http.ResponseWriter, data interface{}) {
-	render(parseTemplate("index.html"), w, data)
+	render(tpIndex, w, data)
 }
 
 // Login render view
 func Login(w http.ResponseWriter, data interface{}) {
-	render(parseTemplate("login.html"), w, data)
+	render(tpLogin, w, data)
 }
 
 // FamsDashboard render view
 func FamsDashboard(w http.ResponseWriter, data interface{}) {
-	render(parseTemplate("fams/dashboard.html"), w, data)
+	render(tpFamsDashboard, w, data)
 }
 
 // FamsRequest render view
 func FamsRequest(w http.ResponseWriter, data interface{}) {
-	render(parseTemplate("fams/request.html"), w, data)
+	render(tpFamsRequest, w, data)
 }
 
 // AdminCreateUser render view
 func AdminCreateUser(w http.ResponseWriter, data interface{}) {
-	render(parseTemplate("admin/create.html"), w, data)
+	render(tpAdminCreateUser, w, data)
 }
 
 // AdminList render view
 func AdminList(w http.ResponseWriter, data interface{}) {
-	render(parseTemplate("admin/list.html"), w, data)
+	render(tpAdminList, w, data)
 }
 
 // AdminUser render view
 func AdminUser(w http.ResponseWriter, data interface{}) {
-	render(parseTemplate("admin/user.html"), w, data)
+	render(tpAdminUser, w, data)
 }
 
 // AdminUpdateUser render view
 func AdminUpdateUser(w http.ResponseWriter, data interface{}) {
-	render(parseTemplate("admin/update.html"), w, data)
+	render(tpAdminUpdateUser, w, data)
 }
 
 // ImsDashboard render view
@@ -49,75 +49,75 @@ func ImsDashboard(w http.ResponseWriter, data interface{}) {
 
 // ImsCreateMasterII render view
 func ImsCreateMasterII(w http.ResponseWriter, data interface{}) {
-	render(parseTemplate("ims/createMasterII.html"), w, data)
+	render(tpImsCreateMasterII, w, data)
 }
 
 // ImsMasterIIDetail render view
 func ImsMasterIIDetail(w http.ResponseWriter, data interface{}) {
-	render(parseTemplate("ims/masteriiDetail.html"), w, data)
+	render(tpImsMasterIIDetail, w, data)
 }
 
 // ImsWaittingApproveMasterIIList render view
 func ImsWaittingApproveMasterIIList(w http.ResponseWriter, data interface{}) {
-	render(parseTemplate("ims/waittingApproveMasterIIList.html"), w, data)
+	render(tpImsWaittingApproveMasterIIList, w, data)
 }
 
 // ImsApproveMasterIIList render view
 func ImsApproveMasterIIList(w http.ResponseWriter, data interface{}) {
-	render(parseTemplate("ims/approveMasterIIList.html"), w, data)
+	render(tpImsApproveMasterIIList, w, data)
 }
 
 // ImsRejectMasterIIList render view
 func ImsRejectMasterIIList(w http.ResponseWriter, data interface{}) {
-	render(parseTemplate("ims/rejectMasterIIList.html"), w, data)
+	render(tpImsRejectMasterIIList, w, data)
 }
 
 // ImsUpdateMasterII render view
 func ImsUpdateMasterII(w http.ResponseWriter, data interface{}) {
-	render(parseTemplate("ims/updateMasterII.html"), w, data)
+	render(tpImsUpdateMasterII, w, data)
 }
 
 // ImsWaittingApproveMasterII render view
 func ImsWaittingApproveMasterII(w http.ResponseWriter, data interface{}) {
-	render(parseTemplate("ims/waittingApproveMasterII.html"), w, data)
+	render(tpImsWaittingApproveMasterII, w, data)
 }
 
 // ImsCreateUploadIIDataSearch render view
 func ImsCreateUploadIIDataSearch(w http.ResponseWriter, data interface{}) {
-	render(parseTemplate("ims/uploadIIDataSearch.html"), w, data)
+	render(tpImsCreateUploadIIDataSearch, w, data)
 }
 
 // ImsUploadData render view
 func ImsUploadData(w http.ResponseWriter, data interface{}) {
-	render(parseTemplate("ims/uploadIIData.html"), w, data)
+	render(tpImsUploadData, w, data)
 }
 
 // ImsUploadDataDetail render view
 func ImsUploadDataDetail(w http.ResponseWriter, data interface{}) {
-	render(parseTemplate("ims/uploadIIDataDetail.html"), w, data)
+	render(tpImsUploadDataDetail, w, data)
 }
 
 // ImsCheckUploadData render view
 func ImsCheckUploadData(w http.ResponseWriter, data interface{}) {
-	render(parseTemplate("ims/checkUploadData.html"), w, data)
+	render(tpImsCheckUploadData, w, data)
 }
 
 // ImsWaitLeaderCheckDataList render view
 func ImsWaitLeaderCheckDataList(w http.ResponseWriter, data interface{}) {
-	render(parseTemplate("ims/waittingLeaderCheckList.html"), w, data)
+	render(tpImsWaitLeaderCheckDataList, w, data)
 }
 
 // ImsSearchReport render view
 func ImsSearchReport(w http.ResponseWriter, data interface{}) {
-	render(parseTemplate("ims/searchReport.html"), w, data)
+	render(tpImsSearchReport, w, data)
 }
 
 // CustomerDashboard render view
 func CustomerDashboard(w http.ResponseWriter, data interface{}) {
-	render(parseTemplate("customer/dashboard.html"), w, data)
+	render(tpCustomerDashboard, w, data)
 }
 
 // CustomerCreate render view
 func CustomerCreate(w http.ResponseWriter, data interface{}) {
-	render(parseTemplate("customer/create.html"), w, data)
+	render(tpCustomerCreate, w, data)
 }

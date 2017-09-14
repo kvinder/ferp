@@ -198,6 +198,23 @@
                             </div>
                         </div>
 
+                        <div class="modal fade" id="alertUpdateModal" role="dialog">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button>
+                                        <h4 class="modal-title">Remark For Update</h4>
+                                    </div>
+                                    <div class="modal-body">
+                                        <textarea class="form-control" rows="3" name="inputConfirmUpdate" id="inputConfirmUpdate"></textarea>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="submit" class="btn btn-success" id="btnConfirmUpdate">confirm update</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
                         <div class="modal fade" id="alertDeleteModal" role="dialog">
                             <div class="modal-dialog">
                                 <div class="modal-content">
@@ -378,6 +395,10 @@
         });
 
         $("#btnUpdate").click(function() {
+            $("#alertUpdateModal").modal({show:true});
+        });
+
+        $("#btnConfirmUpdate").click(function() {
             $("#statusInput").val("UPDATE_MASTER_II");
             $("#formII").submit();
         });

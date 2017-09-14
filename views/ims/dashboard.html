@@ -44,8 +44,10 @@
                                     <th>IN Number</th>
                                     <th>Ctrate Date</th>
                                     <th>Customer</th>
-                                    <th>Part Number </th>
+                                    <th>Part Number</th>
+                                    <th>Process</th>
                                     <th>Type</th>
+                                    <th>Work Order</th>
                                     <th>Upload By</th>
                                     <th>File upload</th>
                                     <th>Status</th>
@@ -68,7 +70,13 @@
                                     {{$foo.MasterII.PartNumber}}
                                 </td>
                                 <td>
+                                    {{$foo.Process}}
+                                </td>
+                                <td>
                                     {{$foo.TypeInspection}}
+                                </td>
+                                <td>
+                                    {{$foo.WorkOrder}}
                                 </td>
                                 <td>
                                     {{$foo.CreateBy.Name}}
@@ -143,7 +151,7 @@
                 "aoColumns": [{
                         "bSortable": false
                     },
-                    null, null, null, null, null, null, null,{
+                    null, null, null, null, null, null, null, null, null,{
                         "bSortable": false
                     }
                 ],

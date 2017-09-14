@@ -22,6 +22,8 @@ type History struct {
 
 //CreateHistory database
 func CreateHistory(history History) {
+	db := getConnection()
+	defer db.Close()
 	sqlQuery := `INSERT INTO History (MasterII,status,createBy,Remark,
 	createDate,Drawing,Inspection,file3,file4,file5,textFile3,textFile4,textFile5,
 	InspectionData,FileInspectionData)
@@ -48,6 +50,8 @@ func CreateHistory(history History) {
 
 //GetMasterIIHistorys database
 func GetMasterIIHistorys(masteriiID int) []History {
+	db := getConnection()
+	defer db.Close()
 	sqlQuery := `SELECT id,status,CreateBy,Remark,createDate,Drawing,Inspection,
 	file3,file4,file5,textFile3,textFile4,textFile5,FileInspectionData
 	FROM History WHERE MasterII = ?`
@@ -101,6 +105,8 @@ func GetMasterIIHistorys(masteriiID int) []History {
 
 //GetInspectionDataHistorys database
 func GetInspectionDataHistorys(inspecDataID int) []History {
+	db := getConnection()
+	defer db.Close()
 	sqlQuery := `SELECT id,status,CreateBy,Remark,createDate,Drawing,Inspection,
 	file3,file4,file5,textFile3,textFile4,textFile5,FileInspectionData
 	FROM History WHERE InspectionData = ?`

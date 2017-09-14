@@ -28,6 +28,8 @@ var userStorage []*User
 
 //CreateUser database
 func CreateUser(user *User) {
+	db := getConnection()
+	defer db.Close()
 	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(user.Password), bcrypt.DefaultCost)
 	checkErr(err)
 	sqlQuery := `INSERT INTO APP_USER (employee_id,username,password,name,sex,
@@ -55,6 +57,8 @@ func CreateUser(user *User) {
 
 //UpdateUser database
 func UpdateUser(user *User) {
+	db := getConnection()
+	defer db.Close()
 	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(user.Password), bcrypt.DefaultCost)
 	checkErr(err)
 	sqlQuery := `UPDATE APP_USER SET employee_id = ?, username = ?, password = ?, name = ?, sex = ?,
@@ -83,6 +87,8 @@ func UpdateUser(user *User) {
 
 //ListUsers database
 func ListUsers() []User {
+	db := getConnection()
+	defer db.Close()
 	rows, err := db.Query("SELECT Employee_ID, Username, Name, Department, createDate FROM APP_USER")
 	checkErr(err)
 	var allUser []User
@@ -98,6 +104,8 @@ func ListUsers() []User {
 
 //GetUser database
 func GetUser(employeeID string) User {
+	db := getConnection()
+	defer db.Close()
 	sqlQuery := `
 	SELECT APP_USER.ID,APP_USER.employee_id,APP_USER.username,APP_USER.password,APP_USER.name,APP_USER.sex,APP_USER.department,
 	APP_USER.email, APP_USER.telephone,APP_USER.createDate,APP_USER.updateDate, APP_ROLE.role_name
@@ -119,6 +127,8 @@ func GetUser(employeeID string) User {
 
 //GetUserByID database
 func GetUserByID(userID int) User {
+	db := getConnection()
+	defer db.Close()
 	sqlQuery := `
 	SELECT APP_USER.ID,APP_USER.employee_id,APP_USER.username,APP_USER.password,APP_USER.name,APP_USER.sex,APP_USER.department,
 	APP_USER.email, APP_USER.telephone,APP_USER.createDate,APP_USER.updateDate, APP_ROLE.role_name
@@ -140,6 +150,8 @@ func GetUserByID(userID int) User {
 
 //GetByUsername database
 func GetByUsername(username string) User {
+	db := getConnection()
+	defer db.Close()
 	sqlQuery := `
 	SELECT APP_USER.ID,APP_USER.employee_id,APP_USER.username,APP_USER.password,APP_USER.name,APP_USER.sex,APP_USER.department,
 	APP_USER.email, APP_USER.telephone,APP_USER.createDate,APP_USER.updateDate, APP_ROLE.role_name

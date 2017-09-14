@@ -12,9 +12,32 @@ import (
 	"github.com/tdewolff/minify/js"
 )
 
-// var (
-// 	tpIndex = parseTemplate("index.html")
-// )
+var (
+	tpIndex           = parseTemplate("index.html")
+	tpLogin           = parseTemplate("login.html")
+	tpFamsDashboard   = parseTemplate("fams/dashboard.html")
+	tpFamsRequest     = parseTemplate("fams/request.html")
+	tpAdminCreateUser = parseTemplate("admin/create.html")
+	tpAdminList       = parseTemplate("admin/list.html")
+	tpAdminUser       = parseTemplate("admin/user.html")
+	tpAdminUpdateUser = parseTemplate("admin/update.html")
+	// tpImsDashboard                   = parseTemplate("ims/dashboard.html")
+	tpImsCreateMasterII              = parseTemplate("ims/createMasterII.html")
+	tpImsMasterIIDetail              = parseTemplate("ims/masteriiDetail.html")
+	tpImsWaittingApproveMasterIIList = parseTemplate("ims/waittingApproveMasterIIList.html")
+	tpImsApproveMasterIIList         = parseTemplate("ims/approveMasterIIList.html")
+	tpImsRejectMasterIIList          = parseTemplate("ims/rejectMasterIIList.html")
+	tpImsUpdateMasterII              = parseTemplate("ims/updateMasterII.html")
+	tpImsWaittingApproveMasterII     = parseTemplate("ims/waittingApproveMasterII.html")
+	tpImsCreateUploadIIDataSearch    = parseTemplate("ims/uploadIIDataSearch.html")
+	tpImsUploadData                  = parseTemplate("ims/uploadIIData.html")
+	tpImsUploadDataDetail            = parseTemplate("ims/uploadIIDataDetail.html")
+	tpImsCheckUploadData             = parseTemplate("ims/checkUploadData.html")
+	tpImsWaitLeaderCheckDataList     = parseTemplate("ims/waittingLeaderCheckList.html")
+	tpImsSearchReport                = parseTemplate("ims/searchReport.html")
+	tpCustomerDashboard              = parseTemplate("customer/dashboard.html")
+	tpCustomerCreate                 = parseTemplate("customer/create.html")
+)
 
 var m = minify.New()
 

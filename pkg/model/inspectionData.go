@@ -12,6 +12,7 @@ type InspectionData struct {
 	MasterII           MasterInspection
 	Status             string
 	WorkOrder          string
+	Process            string
 	TypeInspection     string
 	QtyInspection      int
 	CreateBy           User
@@ -25,14 +26,17 @@ type InspectionData struct {
 
 //CreateInspectionData database
 func CreateInspectionData(inspectionData InspectionData) int {
-	sqlQuery := `INSERT INTO InspectionData (INNumber,MasterII,FileInspectionData,workOrder,typeInspection,qtyInspection,
+	db := getConnection()
+	defer db.Close()
+	sqlQuery := `INSERT INTO InspectionData (INNumber,MasterII,FileInspectionData,workOrder,process,typeInspection,qtyInspection,
 	Status,remark,CreateDate,UpdateDate,CreateBy,UpdateBy)
-	VALUES (?,?,?,?,?,?,?,?,?,?,?,?)`
+	VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)`
 	result, err := db.Exec(sqlQuery,
 		inspectionData.INNumber,
 		inspectionData.MasterII.ID,
 		inspectionData.FileInspectionData.ID,
 		inspectionData.WorkOrder,
+		inspectionData.Process,
 		inspectionData.TypeInspection,
 		inspectionData.QtyInspection,
 		inspectionData.Status,
@@ -63,6 +67,8 @@ func CreateInspectionData(inspectionData InspectionData) int {
 
 //UpdateInspectionData database
 func UpdateInspectionData(inspectionData InspectionData) int {
+	db := getConnection()
+	defer db.Close()
 	sqlQuery := `UPDATE InspectionData SET Status = ?, UpdateDate = ?, UpdateBy = ?
 	WHERE id = ?`
 	_, err := db.Exec(sqlQuery,
@@ -86,8 +92,10 @@ func UpdateInspectionData(inspectionData InspectionData) int {
 
 //GetInspectionData database
 func GetInspectionData(id int) InspectionData {
-	sqlQuery := `SELECT ID,INNumber,MasterII,FileInspectionData,workOrder,typeInspection,
-	qtyInspection,Status,remark,CreateDate,UpdateDate,CreateBy,UpdateBy
+	db := getConnection()
+	defer db.Close()
+	sqlQuery := `SELECT ID,INNumber,MasterII,FileInspectionData,workOrder,process,typeInspection,
+	qtyInspection,Status,remark,strftime('%Y-%m-%d %H:%M', CreateDate),UpdateDate,CreateBy,UpdateBy
 	FROM InspectionData WHERE id = ?`
 	rowsInspectionData, err := db.Query(sqlQuery, id)
 	checkErr(err)
@@ -100,6 +108,7 @@ func GetInspectionData(id int) InspectionData {
 			&masterIIID,
 			&fileInspecID,
 			&inspecData.WorkOrder,
+			&inspecData.Process,
 			&inspecData.TypeInspection,
 			&inspecData.QtyInspection,
 			&inspecData.Status,
@@ -124,6 +133,8 @@ func GetInspectionData(id int) InspectionData {
 
 //GetWorkOrderLike form database
 func GetWorkOrderLike(workOrder string) []string {
+	db := getConnection()
+	defer db.Close()
 	s := "%" + workOrder + "%"
 	if len(workOrder) <= 0 {
 		s = "%"
@@ -144,12 +155,14 @@ func GetWorkOrderLike(workOrder string) []string {
 
 //GetAllInspectionDataByStatus form database
 func GetAllInspectionDataByStatus(status ...string) []InspectionData {
+	db := getConnection()
+	defer db.Close()
 	stuff := make([]interface{}, len(status))
 	for i, value := range status {
 		stuff[i] = value
 	}
-	sqlQuery := `SELECT ID,INNumber,MasterII,FileInspectionData,workOrder,typeInspection,
-	qtyInspection,Status,remark,CreateDate,UpdateDate,CreateBy,UpdateBy
+	sqlQuery := `SELECT ID,INNumber,MasterII,FileInspectionData,workOrder,process,typeInspection,
+	qtyInspection,Status,remark,strftime('%Y-%m-%d %H:%M', CreateDate),UpdateDate,CreateBy,UpdateBy
 	FROM InspectionData WHERE status in (?` + strings.Repeat(",?", len(status)-1) + `)`
 	rowsInspectionData, err := db.Query(sqlQuery, stuff...)
 	checkErr(err)
@@ -163,6 +176,7 @@ func GetAllInspectionDataByStatus(status ...string) []InspectionData {
 			&masterIIID,
 			&fileInspecID,
 			&inspecData.WorkOrder,
+			&inspecData.Process,
 			&inspecData.TypeInspection,
 			&inspecData.QtyInspection,
 			&inspecData.Status,
@@ -188,9 +202,10 @@ func GetAllInspectionDataByStatus(status ...string) []InspectionData {
 
 //GetAllInspectionDataBetweenDate form database
 func GetAllInspectionDataBetweenDate(startDate, endDate string) []InspectionData {
-
-	sqlQuery := `SELECT ID,INNumber,MasterII,FileInspectionData,workOrder,typeInspection,
-	qtyInspection,Status,remark,CreateDate,UpdateDate,CreateBy,UpdateBy
+	db := getConnection()
+	defer db.Close()
+	sqlQuery := `SELECT ID,INNumber,MasterII,FileInspectionData,workOrder,process,typeInspection,
+	qtyInspection,Status,remark,strftime('%Y-%m-%d %H:%M', CreateDate),UpdateDate,CreateBy,UpdateBy
 	FROM InspectionData WHERE CreateDate BETWEEN ? and ?`
 	rowsInspectionData, err := db.Query(sqlQuery, startDate, endDate)
 	checkErr(err)
@@ -204,6 +219,7 @@ func GetAllInspectionDataBetweenDate(startDate, endDate string) []InspectionData
 			&masterIIID,
 			&fileInspecID,
 			&inspecData.WorkOrder,
+			&inspecData.Process,
 			&inspecData.TypeInspection,
 			&inspecData.QtyInspection,
 			&inspecData.Status,
@@ -229,9 +245,10 @@ func GetAllInspectionDataBetweenDate(startDate, endDate string) []InspectionData
 
 //GetAllInspectionData form database
 func GetAllInspectionData() []InspectionData {
-
-	sqlQuery := `SELECT ID,INNumber,MasterII,FileInspectionData,workOrder,typeInspection,
-	qtyInspection,Status,remark,CreateDate,UpdateDate,CreateBy,UpdateBy
+	db := getConnection()
+	defer db.Close()
+	sqlQuery := `SELECT ID,INNumber,MasterII,FileInspectionData,workOrder,process,typeInspection,
+	qtyInspection,Status,remark, strftime('%Y-%m-%d %H:%M', CreateDate),UpdateDate,CreateBy,UpdateBy
 	FROM InspectionData`
 	rowsInspectionData, err := db.Query(sqlQuery)
 	checkErr(err)
@@ -245,6 +262,7 @@ func GetAllInspectionData() []InspectionData {
 			&masterIIID,
 			&fileInspecID,
 			&inspecData.WorkOrder,
+			&inspecData.Process,
 			&inspecData.TypeInspection,
 			&inspecData.QtyInspection,
 			&inspecData.Status,

@@ -11,6 +11,8 @@ type Customer struct {
 
 //CreateCustomer database
 func CreateCustomer(customer Customer) {
+	db := getConnection()
+	defer db.Close()
 	sqlInsertCustomer := `INSERT INTO CUSTOMER (name,typeName,createDate) VALUES (UPPER(?),?,?)`
 	_, err := db.Exec(sqlInsertCustomer, customer.Name, customer.TypeName, customer.CreateDate)
 	checkErr(err)
@@ -18,6 +20,8 @@ func CreateCustomer(customer Customer) {
 
 //GetAllCustomer form database
 func GetAllCustomer() []Customer {
+	db := getConnection()
+	defer db.Close()
 	rows, err := db.Query("SELECT id, name, typeName, createDate FROM CUSTOMER")
 	checkErr(err)
 	var allCustomer []Customer
@@ -33,6 +37,8 @@ func GetAllCustomer() []Customer {
 
 //GetCustomerByName form database
 func GetCustomerByName(customer string) Customer {
+	db := getConnection()
+	defer db.Close()
 	sqlQuery := "SELECT id, name, typeName, createDate FROM CUSTOMER WHERE UPPER(name) = UPPER(?)"
 	rows, err := db.Query(sqlQuery, customer)
 	checkErr(err)
@@ -47,6 +53,8 @@ func GetCustomerByName(customer string) Customer {
 
 //GetCustomerByID form database
 func GetCustomerByID(customerID int) Customer {
+	db := getConnection()
+	defer db.Close()
 	sqlQuery := "SELECT id, name, typeName, createDate FROM CUSTOMER WHERE id = ?"
 	rows, err := db.Query(sqlQuery, customerID)
 	checkErr(err)
@@ -61,6 +69,8 @@ func GetCustomerByID(customerID int) Customer {
 
 //GetCustomerLike form database
 func GetCustomerLike(customer string) []Customer {
+	db := getConnection()
+	defer db.Close()
 	s := "%" + customer + "%"
 	if len(customer) <= 0 {
 		s = "%"

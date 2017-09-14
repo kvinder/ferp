@@ -15,7 +15,6 @@ func main() {
 	if setUpDatabase == "create" {
 		model.CreateDatabase()
 	}
-	defer model.CloseConnection()
 	mux := http.NewServeMux()
 	app.Router(mux)
 	fmt.Println("localhost:" + port + " runing...")
