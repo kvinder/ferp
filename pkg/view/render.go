@@ -44,7 +44,7 @@ func AdminUpdateUser(w http.ResponseWriter, data interface{}) {
 
 // ImsDashboard render view
 func ImsDashboard(w http.ResponseWriter, data interface{}) {
-	render(parseTemplate("ims/dashboard.html"), w, data)
+	render(tpImsDashboard, w, data)
 }
 
 // ImsCreateMasterII render view
