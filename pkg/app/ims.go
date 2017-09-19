@@ -124,7 +124,7 @@ func imsUpdateMasterII(w http.ResponseWriter, r *http.Request) {
 		t := time.Now()
 		now := t.Format("2006-01-02 15:04:05")
 		currentMasterII.CustomerMaterII = customer
-		currentMasterII.PartNumber = r.FormValue("inputPartName")
+		currentMasterII.PartNumber = r.FormValue("inputPartNo")
 		currentMasterII.PartName = r.FormValue("inputPartName")
 		currentMasterII.Revision = r.FormValue("inputRevision")
 		currentMasterII.TextFile3 = r.FormValue("inputFile1")
